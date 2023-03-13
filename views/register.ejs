@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<form id="register" action="/api/user/register" method="POST">
+    <div class="register-div">
+        <h1 class="register-header">Become a blogger here!</h1>
+        <div class="input-field first-name">
+            <!-- first name -->
+            <div class="name-div">
+                <label class="input-label-email" for="firstName">Full Name</label>
+
+                <input  placeholder="Enter your Full Name" type="text" name="fullName" id="fullName">
+            </div>
+        </div>
+        
+        <div class="input-field">
+            <label class="input-label-email" for="email">Email</label>
+            <input  placeholder="Enter your Email" type="email" name="email" id="email">
+        </div>
+        <div class="input-field">
+            <label class="input-label-password" for="password">Password</label>
+            <input placeholder="Enter your Password" type="text" name="password" id="password">
+        </div>
+        <div class="input-field">
+            <button class="register-button" type="submit">register</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

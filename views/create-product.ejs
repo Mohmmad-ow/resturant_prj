@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form ref='uploadForm' 
+        id='uploadForm' 
+        action='/api/products/create' 
+        method='post' 
+        encType="multipart/form-data">
+        
+        <input type="text" placeholder="Product name" name="name">
+        <input type="text" placeholder="Product price" name="price">
+        <select name="type" id="type">
+            <option value="drink">Drink</option>
+            <option value="food">Food</option>
+          </select>
+
+        <input type="file" name="product_image" id="product_image">
+
+        <button>Add products</button>
+    </form>
+</body>
+</html>
