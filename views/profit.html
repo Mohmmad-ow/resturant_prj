@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="flex-container">
+	<div class="main-list" style="background-color: #0bca8d;width:460px;">
+		<h1>Dashborad</h1>
+		<div style="display: inline-flex;width: 100%;color: #000000;background-color: #ffffff;">
+			<div style="font-size: 15px;margin-top: 29px;line-height: 1.2;margin-right: 93px;">
+				<h2>ROONY</h2>
+				<p>AD-IOS</p>
+			</div>
+			<img src="admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
+		</div>
+		<div class="setting-list">
+			<div>Setting</div>
+			<div>Product</div>
+			<div>Profit</div>
+			<div>Expenses </div>
+			<div>Invoice</div>
+			<div>Users</div>
+			<div>Log out</div>
+		</div>
+	</div>
+    
+	<div class="grid-container" style="line-height: 50px;">
+        <div style="direction:ltr;color:#000;position: absolute;background: none;border: none;margin: auto;top: -25px;width: 50%;">
+            
+            <label style="font-size: 18px;" for="date-input">Choose a date:</label>
+            <input type="date" id="date-input" name="date-input">
+            <input type="button" class="btn" style="width: 15%;
+            font-size: 15px;
+            height: 30px;" value="Select Date" onclick="">
+            <button class="btn" style="margin-left: 350px;">Back</button>
+        </div>
+        <table class="table" style=" width: 110vh; ">
+            <tr><td colspan="3" style="text-align: center;">Date 20/3/2023</td></tr>
+            <tr  style="line-height: 0%;">
+                <th>Total Profit</th>
+                <th>Total Expense</th>
+                <th>Total Amount Sold</th>
+            </tr>
+            <tr style="line-height: 0%;">
+                <td>20000$</td>
+                <td>5000$</td>
+                <td>10000$</td>
+            </tr>
+
+        </table>
+	</div>
+</div>
+</body>
+</html>

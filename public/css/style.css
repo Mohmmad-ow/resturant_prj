@@ -1,0 +1,209 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    direction: rtl;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.flex-container {
+    display: flex;
+    background-color: #ffffff;
+  }
+  
+  .flex-container > div {
+    background-color: #ffffff;
+    color: white;
+    width: 100%;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 25px;
+  }
+  .grid-container {
+    display: inline-grid;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px;
+    background-color: #0bca8d;
+    width: 100%;
+    gap: 15px;
+  }
+  .grid-container > div {
+    background-color: #59b799;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 50px;
+    text-align: center;}
+  .setting-list{
+    margin-top: 15px;
+  }
+  .setting-list > div{
+    background-color: #000000;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  table td, table th{
+    padding: 0.75rem;
+    vertical-align: top;
+    line-height: 50px;
+    border-top: 1px solid #959ea8;
+  }
+tbody{
+  display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+.btn{
+  
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: #59b799;
+  border-radius: 15px;
+  color: #ffffff;
+  padding-right: 5px;
+  font-size: 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.table{
+  background-color: #59b799;
+  width: 82vh;
+  font-weight: 600;
+  margin: auto;
+  margin-right: 40px;
+  color: #000000;}
+  
+.img{
+  width: 50px;
+  height: 50px;
+}
+table > tr > td{
+  line-height: 0%;
+}
+a{
+  text-decoration: none;
+  color: #000000;
+ 
+}
+#userpage{
+  color: #000000;
+  margin-right: 3%;
+
+}
+table{
+  border-bottom: 1px solid #959ea8;
+}
+.addnew-user-customer-details{
+  margin-left: 75%;
+  margin-top: 3%;
+  
+}
+
+td:nth-child(odd){background-color: #59b799}
+.container{
+  width: 1100px;
+}
+.addnew-user-customer-details > form > div > input, form > input{
+  width: 280px;
+  height: 40px;
+  text-align: center;
+  border-radius: 30px;
+}
+    @media (max-width: 800px) {
+        .column {
+          flex: 50%;
+          max-width: 50%;
+        }
+      }
+      
+      /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+      @media (max-width: 600px) {
+        .column {
+          flex: 100%;
+          max-width: 100%;
+        }
+      }
+ form > img{
+  width: 100px;
+  height: 100px;
+ } 
+.login-abord{
+  height: 40%;
+  width: 20%;
+  margin: auto;
+  display: inline-block;
+}
+form > .btn{
+  color: #000000;
+}
+#flex-container {
+  display: flex;
+  font-size: 20px;
+  text-align: center;
+  width: 110vh;
+  height: 60px;
+  margin-right: 40px;
+  margin-top: 5px;
+}
+
+#flex-item-resived {
+  background-color: #59b799;
+  padding: 5px;
+  flex: 50%;
+  margin-left: 5px;}
+
+#flex-item-return {
+  background-color: #59b799;
+  padding: 5px;
+  flex: 50%;
+  margin-right: 5px;
+}
+#flex-item-finish {
+  background-color: #59b799;
+  padding: 5px;
+  flex: 10%;
+  margin-left: 5px;}
+
+#flex-item-print {
+  background-color: #59b799;
+  padding: 5px;
+  flex: 90%;
+  margin-right: 5px;
+}
+.checkininput{
+  width:28%;
+  font-size: 18px;
+  height: 40px;
+  border-radius: 30px;
+  padding-right: 15px;
+}
+.checkin > div > button{
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 30px;
+  background-color: #59b799;
+  color: aliceblue;
+}
+.checkin-list > div > button{
+  width: 100px;
+  height: 40px;
+  font-size: 20px;
+  background: none;
+  color: aliceblue;
+  cursor: pointer;
+}
+.checkin-list {
+  padding-top: 80%;
+}
+.checkin-list > div{
+  background-color: #000000;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+#date-input{
+  text-align: center;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="flex-container">
+	<div class="main-list" style="background-color: #0bca8d;width:460px;">
+		<h1>Dashborad</h1>
+		<div style="display: inline-flex;width: 100%;color: #000000;background-color: #ffffff;">
+			<div style="font-size: 15px;margin-top: 29px;line-height: 1.2;margin-right: 93px;">
+				<h2>ROONY</h2>
+				<p>AD-IOS</p>
+			</div>
+			<img src="admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
+		</div>
+		<div class="setting-list">
+			<div>Setting</div>
+			<div>Product</div>
+			<div>Profit</div>
+			<div>Expenses </div>
+			<div>Invoice</div>
+			<div>Users</div>
+			<div>Log out</div>
+		</div>
+	</div>
+    
+	<div class="grid-container" style="padding-top: 75px;">
+        <div style="position: absolute;background: none;border: none;margin: auto;top: -25px;">
+            <button class="btn" style="margin-left: 200px;">Back</button>
+           <a href="/api/products/create"><button class="btn" style="width:200px;margin-right: 135px;">Add Product</button></a>
+        </div>
+        <table class="table" style="background-color: #fdf5f5a2;">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Method</th>
+            </tr>
+            <% products.forEach((product) => { %>
+            <tr>
+                <td><img class="img"  src="<%- product.pic_url %>"></td>
+                <td><%= product.name %></td>
+                <td><%= product.price %>$</td>
+                <td><%= product.type %></td>
+                <td>
+                    <button class="btn">Edit</button>
+                    <button class="btn">Delete</button>
+                </td>
+            </tr>
+            <% }) %>
+            
+               
+            </tr>
+        </table>
+	</div>
+</div>
+</body>
+</html>

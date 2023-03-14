@@ -13,19 +13,23 @@ router.get('/', (req, res, next) => {
     res.render("index")
 })
 
+router.get("/test", (req, res) => {
+    res.render('test')
+})
 // upload images
 
 router.get('/api/products/view', (req, res) => {
     Product.find().then((content) => {
-        res.send(content)
+        res.render("product", {products: content})
     }).catch((err) => {
         console.log(err)
     })
 })
 
 router.get('/api/products/create', (req, res) => {
-    res.render('create-product')
+    res.render('product-create')
 })
+
 
 router.post('/api/products/create', (req, res) => {
     if (Object.keys(req.files).length == 0) {
@@ -37,7 +41,7 @@ router.post('/api/products/create', (req, res) => {
     const file = req.files.product_image
     const filePath = path.join(__dirname,'../' + "public/uploaded_images/products/" + Date.now() + file.name);
     const {name, type, price} = req.body
-    Product.create({name: name,type: type, price: price, pic_url: filePath}).then(content => {
+    Product.create({name: name,type: type, price: price, pic_url: ("/uploaded_images/products/" + Date.now() + file.name)}).then(content => {
         if(content) {
             file.mv(filePath).then(() => {
                 res.redirect('/api/products/view')
@@ -57,6 +61,16 @@ router.post('/api/products/create', (req, res) => {
 router.post('/test', (req, res) => {
     console.log(req.body)
 })
+
+// invoice is gonna be viewed by id at first but later by table number
+router.get("/api/invoice/:id", (req, res) => {
+    const id = req.params.id;
+    Invoice.findById(id).then((invoice) => {
+        res.render("invoice", {invoice: invoice})
+    }).catch(err => {console.log(err)})
+})
+
+
 router.get("/api/invoice/create", (req, res) => {
     Product.find().then((products) => {
         res.render('invoice-create', {products: products})
@@ -79,9 +93,6 @@ router.post('/api/invoice/create', (req, res) => {
     })
     
     
-    
-
-
 })
 
 // user api

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Expenses</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="flex-container">
+	<div class="main-list" style="background-color: #0bca8d;width:460px;">
+		<h1>Dashborad</h1>
+		<div style="display: inline-flex;width: 100%;color: #000000;background-color: #ffffff;">
+			<div style="font-size: 15px;margin-top: 29px;line-height: 1.2;margin-right: 93px;">
+				<h2>ROONY</h2>
+				<p>AD-IOS</p>
+			</div>
+			<img src="admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
+		</div>
+		<div class="setting-list">
+			<div>Setting</div>
+			<div>Product</div>
+			<div>Profit</div>
+			<div>Expenses </div>
+			<div>Invoice</div>
+			<div>Users</div>
+			<div>Log out</div>
+		</div>
+	</div>
+    <div style="line-height: 50px;">
+        <div style="direction:ltr;color:#000;position: absolute;background: none;border: none;margin: auto;top: 10px;width: 50%;">
+            
+            <label style="font-size: 18px;" for="date-input">Choose a date:</label>
+            <input type="date" id="date-input" name="date-input">
+            <input type="button" class="btn" style="width: 15%;
+            font-size: 15px;
+            height: 30px;" value="Select Date" onclick="">
+            <button class="btn" style="margin-left: 350px;">Back</button>
+        </div>
+	<div id="userpage" style="padding-top: 75px;">
+                <div class="container">
+                   <table class="users-info" style="width: 70%;">
+                            <tr>
+                                <th>Sequenece</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                            <tr> 
+                                <td>1</td>
+                                <td>Roony</td>
+                                <td>Revenge</td>
+                                <td>Revenge</td>
+                            </tr>
+                            <tr> 
+                                <td>2</td>
+                                <td>Roony</td>
+                                <td>Revenge</td>
+                                <td>Revenge</td>
+                            </tr>
+                            <tr> 
+                                <td>3</td>
+                                <td>Roony</td>
+                                <td>Revenge</td>
+                                <td>Revenge</td>
+                            </tr>
+                   </table>
+                </div>
+                    <div class="container">
+                        <div class="addnew-user-customer-details">
+                                    <p style="color: red"></p>
+                                  <h3>Add New Item</h3>
+                                <form action="" method="post">
+                                    <div class="form-control">
+                                    
+                                        <input type="text" placeholder="Item Name" name="first_name" />
+                                    </div>
+                                    <div class="form-control">
+                                    
+                                        <input type="text" placeholder="Quantity" name="last_name" />
+                                    </div>
+                                    <div class="form-control">
+                                    
+                                        <input type="text" placeholder="Price" name="username" />
+                                    </div>
+                                    <button class="btn">Add</button>
+                                </form>
+                        </div>
+                    </div>
+    </div>
+	</div>
+</div>
+</body>
+</html>
