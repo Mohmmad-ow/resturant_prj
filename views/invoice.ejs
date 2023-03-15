@@ -14,11 +14,11 @@
 				<h2>ROONY</h2>
 				<p>AD-IOS</p>
 			</div>
-			<img src="/images/static/admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
+			<img src="admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
 		</div>
 		<div class="setting-list">
 			<div>Setting</div>
-			div><a href="/api/product/view">Setting</a></div>
+			<div>Product</div>
 			<div>Profit</div>
 			<div>Expenses </div>
 			<div>Invoice</div>
@@ -50,7 +50,7 @@
     font-weight: 600;
     padding-right: 10px;
     padding-left: 10px;">2023-2-26 12:30 by ROONY, table Namber : 1</div>
-        <table class="table" style=" width: 110vh; ">
+        <table class="table" style=" width: 200vh; ">
             <tr  style="line-height: 0%;">
                 <th>#</th>
                 <th>Name</th>
@@ -58,13 +58,13 @@
                 <th>Price</th>
             </tr>
             <% for (let i = 0; i < invoice.orderFood.length; i++) { %>
-            <tr  style="line-height: 0%;">
-                <td><%= i %></td>
-                <td><%= invoice.orderFood[i].product.name %></td>
-                <td><%= invoice.orderFood[i].amount %></td>
-                <td><%= invoice.orderFood[i].product.price %>$</td>
-            </tr>
-            <% } %>
+                <tr  style="line-height: 0%;">
+                    <td><%= i %></td>
+                    <td><%= invoice.orderFood[i].product.name %></td>
+                    <td><%= invoice.orderFood[i].amount %></td>
+                    <td><%= invoice.orderFood[i].product.price %>$</td>
+                </tr>
+                <% } %>
         </table>
 	</div>
 </div>

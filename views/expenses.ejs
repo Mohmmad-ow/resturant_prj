@@ -3,7 +3,7 @@
 <head>
 	<title>Expenses</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div class="flex-container">
@@ -45,12 +45,15 @@
                                 <th>Quantity</th>
                                 <th>Price</th>
                             </tr>
+                            <% for (let i = 0; i < expenses.length; i++) { %>
                             <tr> 
-                                <td>1</td>
-                                <td>Roony</td>
-                                <td>Revenge</td>
-                                <td>Revenge</td>
+                                <td><%= (i+1) %></td>
+                                <td><%= expenses[i].name %></td>
+                                <td><%= expenses[i].amount %></td>
+                                <td><%= expenses[i].price %>$</td>
+                              
                             </tr>
+                            <% } %>
                             <tr> 
                                 <td>2</td>
                                 <td>Roony</td>
@@ -69,18 +72,18 @@
                         <div class="addnew-user-customer-details">
                                     <p style="color: red"></p>
                                   <h3>Add New Item</h3>
-                                <form action="" method="post">
+                                <form action="/api/expenses/create" method="post">
                                     <div class="form-control">
                                     
-                                        <input type="text" placeholder="Item Name" name="first_name" />
+                                        <input type="text" placeholder="Item Name" name="name"/>
                                     </div>
                                     <div class="form-control">
                                     
-                                        <input type="text" placeholder="Quantity" name="last_name" />
+                                        <input type="text" placeholder="Quantity" name="amount" />
                                     </div>
                                     <div class="form-control">
                                     
-                                        <input type="text" placeholder="Price" name="username" />
+                                        <input type="text" placeholder="Price" name="price" />
                                     </div>
                                     <button class="btn">Add</button>
                                 </form>

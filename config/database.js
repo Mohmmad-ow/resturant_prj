@@ -35,5 +35,13 @@ const InvoiceSchema = mongoose.Schema({
 })
 const Invoice = mongoose.model('Invoice', InvoiceSchema)
 
+const ExpenseSchema = mongoose.Schema({
+        name: String,
+        amount: String,
+        price: Number,
+        date: {type: Date, default: Date.now()}
+})
 
-module.exports = {User, Product, Invoice}
+const Expense = mongoose.model('expense', ExpenseSchema)
+
+module.exports = {User, Product, Invoice, Expense}

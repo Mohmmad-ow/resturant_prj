@@ -3,7 +3,7 @@ const { render } = require('ejs');
 const passport = require('passport');
 const router = require('express').Router();
 // the User product and o
-const {User, Product, Invoice} = require('../config/database');
+const {User, Product, Invoice, Expense} = require('../config/database');
 const {genPassword} = require('../Utils/passwordVaild')
 
 // we need path to go one level up when uploading pics
@@ -17,15 +17,6 @@ router.get("/test", (req, res) => {
     res.render('test')
 })
 // upload images
-
-router.get('/api/products/view', (req, res) => {
-    Product.find().then((content) => {
-        res.render("product", {products: content})
-    }).catch((err) => {
-        console.log(err)
-    })
-})
-
 router.get('/api/products/create', (req, res) => {
     res.render('product-create')
 })
@@ -37,7 +28,7 @@ router.post('/api/products/create', (req, res) => {
 
         return;
     } 
-    
+    console.log("here I'm")
     const file = req.files.product_image
     const filePath = path.join(__dirname,'../' + "public/uploaded_images/products/" + Date.now() + file.name);
     const {name, type, price} = req.body
@@ -52,9 +43,62 @@ router.post('/api/products/create', (req, res) => {
     }).catch(err => {
         console.log(err)
     })
-    
-    
+})
 
+router.get('/api/products/view', (req, res) => {
+    Product.find().then((content) => {
+        res.render("product", {products: content})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+router.get("/api/products/edit/:id", (req, res) => {
+    const id = req.params.id
+    Product.findById(id).then(content => {
+        res.render("product-edit", {product: content})
+    }).catch(err => console.log(err))
+})
+router.post("/api/products/edit/:id", (req, res) => {
+    console.log("you are editing")
+    if (Object.keys(req.files).length == 0) {
+        res.status(400).send("No file uploaded")
+
+        return;
+    } 
+    const id = req.params.id
+
+    const file = req.files.product_image
+    const filePath =path.join(__dirname,'../' + "public/uploaded_images/products/" + Date.now() + file.name);
+    const {name, type, price} = req.body
+    
+    Product.findOneAndUpdate({_id: id}, {$set: {name: name, price: price, type: type,  pic_url: ("/uploaded_images/products/" + Date.now() + file.name)}}).then(content => {
+        if(content) {
+            console.log(content)
+            file.mv(filePath).then(() => {
+                res.redirect('/api/products/view')
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+
+})
+
+// Product delete
+router.get("/api/products/delete/:id", (req, res) => {
+    const id = req.params.id;
+    res.render("product-delete", {id: id})
+})
+
+router.post("/api/products/delete/:id", (req, res) => {
+    const id = req.params.id
+    Product.findByIdAndDelete(id).then(content => {
+        console.log(content)
+        res.redirect("/api/products/view")
+    }).catch(err => console.log(err))
 })
 
 // Ordering inVoice
@@ -63,7 +107,7 @@ router.post('/test', (req, res) => {
 })
 
 // invoice is gonna be viewed by id at first but later by table number
-router.get("/api/invoice/:id", (req, res) => {
+router.get("/api/invoice/v/:id", (req, res) => {
     const id = req.params.id;
     Invoice.findById(id).then((invoice) => {
         res.render("invoice", {invoice: invoice})
@@ -94,6 +138,29 @@ router.post('/api/invoice/create', (req, res) => {
     
     
 })
+
+// exprenses
+// viewing expenses
+router.get("/api/expenses/view", (req, res) => {
+    Expense.find().then((content) => {
+
+        res.render("expenses", {expenses: content})
+    }).catch(err => {console.log(err)})
+})
+// creating expenses
+router.post("/api/expenses/create", (req, res) => {
+    const {name, price, amount} = req.body
+    Expense.create({name: name, price: price, amount: amount}).then((content) => {
+        if(content) {
+            console.log(content)
+            res.redirect("/api/expenses/view")
+        }
+    }).catch((err) => {
+        console.log(err)
+    })
+
+})
+
 
 // user api
 

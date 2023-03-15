@@ -47,14 +47,14 @@
                 <td><%= product.price %>$</td>
                 <td><%= product.type %></td>
                 <td>
-                    <button class="btn">Edit</button>
-                    <button class="btn">Delete</button>
+                    <a href="/api/products/edit/<%= product.id %>"><button class="btn">Edit</button></a>
+                    <a href="/api/products/delete/<%= product.id %>"><button class="btn">Delete</button></a>
                 </td>
             </tr>
             <% }) %>
             
                
-            </tr>
+            
         </table>
 	</div>
 </div>

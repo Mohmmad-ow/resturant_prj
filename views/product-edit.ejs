@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/dist/output.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <form class="bg-gray-600 " ref='uploadForm' 
+    <form ref='uploadForm' 
         id='uploadForm' 
-        action='/api/products/create' 
+        action="/api/products/edit/<%= product.id %>" 
         method='post' 
         encType="multipart/form-data">
         
-        <input type="text" placeholder="Product name" name="name">
-        <input type="text" placeholder="Product price" name="price">
+        <input type="text" placeholder="Product name" name="name" value="<%= product.name %>">
+        <input type="text" placeholder="Product price" name="price" value="<%= product.price %>">
         <select name="type" id="type">
             <option value="drink">Drink</option>
             <option value="food">Food</option>
