@@ -6,11 +6,15 @@ const router = require('express').Router();
 const {User, Product, Invoice, Expense} = require('../config/database');
 const {genPassword} = require('../Utils/passwordVaild')
 
+// file system to delete images when they are edited out
+const fs = require("fs")
+
 // we need path to go one level up when uploading pics
 const path = require('path')
 
 router.get('/', (req, res, next) => {
-    res.render("index")
+    console.log(req.user)
+    res.render("home")
 })
 
 router.get("/test", (req, res) => {
@@ -30,9 +34,10 @@ router.post('/api/products/create', (req, res) => {
     } 
     console.log("here I'm")
     const file = req.files.product_image
-    const filePath = path.join(__dirname,'../' + "public/uploaded_images/products/" + Date.now() + file.name);
+    const date = Date.now()
+    const filePath = path.join(__dirname,'../' + "public/uploaded_images/products/" + date + file.name);
     const {name, type, price} = req.body
-    Product.create({name: name,type: type, price: price, pic_url: ("/uploaded_images/products/" + Date.now() + file.name)}).then(content => {
+    Product.create({name: name,type: type, price: price, pic_url: ("/uploaded_images/products/" + date + file.name)}).then(content => {
         if(content) {
             file.mv(filePath).then(() => {
                 res.redirect('/api/products/view')
@@ -67,14 +72,20 @@ router.post("/api/products/edit/:id", (req, res) => {
         return;
     } 
     const id = req.params.id
-
+    const date = Date.now()
     const file = req.files.product_image
-    const filePath =path.join(__dirname,'../' + "public/uploaded_images/products/" + Date.now() + file.name);
+    const filePath =path.join(__dirname,'../' + "public/uploaded_images/products/" + date + file.name);
     const {name, type, price} = req.body
     
-    Product.findOneAndUpdate({_id: id}, {$set: {name: name, price: price, type: type,  pic_url: ("/uploaded_images/products/" + Date.now() + file.name)}}).then(content => {
+    Product.findOneAndUpdate({_id: id}, {$set: {name: name, price: price, type: type,  pic_url: ("/uploaded_images/products/" + date + file.name)}}).then(content => {
         if(content) {
-            console.log(content)
+            fs.unlinkSync(path.join(__dirname,'../' + "public", content.pic_url), (err) => {
+                if(!err) {
+                    console.log("deleted old image")
+                } else {
+                    console.log(err)
+                }
+            })
             file.mv(filePath).then(() => {
                 res.redirect('/api/products/view')
             }).catch((err) => {
@@ -96,14 +107,27 @@ router.get("/api/products/delete/:id", (req, res) => {
 router.post("/api/products/delete/:id", (req, res) => {
     const id = req.params.id
     Product.findByIdAndDelete(id).then(content => {
-        console.log(content)
+        fs.unlinkSync(path.join(__dirname,'../' + "public", content.pic_url), (err) => {
+            if(!err) {
+                console.log("worked")
+            } else {
+                console.log(err)
+            }
+        })
         res.redirect("/api/products/view")
     }).catch(err => console.log(err))
 })
 
 // Ordering inVoice
-router.post('/test', (req, res) => {
-    console.log(req.body)
+
+
+router.get("/api/invoice/view", (req, res) => {
+    Product.find().then((content) => {
+        res.render("inTest", {products: content})
+
+    }).catch(err => {
+        console.log(err)
+    })
 })
 
 // invoice is gonna be viewed by id at first but later by table number
@@ -115,6 +139,17 @@ router.get("/api/invoice/v/:id", (req, res) => {
 })
 
 
+// view all invoices
+router.get("/api/invoice/v/", (req, res) => {
+    Invoice.find().then(content => {
+        
+        
+        // res.render("invoice-view", {Invoices: content})
+        res.render('analytics', {checkouts: content})
+    }).catch(err => console.log(err))
+})
+
+
 router.get("/api/invoice/create", (req, res) => {
     Product.find().then((products) => {
         res.render('invoice-create', {products: products})
@@ -122,14 +157,26 @@ router.get("/api/invoice/create", (req, res) => {
 })
 
 router.post('/api/invoice/create', (req, res) => {
+    console.log(req.body)
+    let wholePrice = req.body.wholePrice
+    wholePrice = Number(wholePrice.slice(0, -1))
    let ids = Object.keys(req.body).filter( (id) => {
-       return req.body[id][0] == "yes"
+       return req.body[id]
     })
+    ids.pop()
+    
+
     Product.find({_id:{$in: ids}}).then((products) => {
-        let ay = products.map((product) => {
-            return {amount: req.body[product.id][1], product: product}
+        let orderObject = products.map((product) => {
+            return {amount: req.body[product.id], product: product}
         })
-        Invoice.create({orderFood: ay, date: Date.now()}).then((content) => {
+        payment = orderObject.map(obj => {
+            console.log(obj['product'].price*obj.amount)
+            return obj['product'].price*obj.amount
+          })
+        console.log(payment)
+        console.log(orderObject)
+        Invoice.create({orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice}).then((content) => {
             console.log(content)
         }).catch(err => {console.log(err)})
     }).catch(err => {
@@ -139,7 +186,7 @@ router.post('/api/invoice/create', (req, res) => {
     
 })
 
-// exprenses
+// expresses
 // viewing expenses
 router.get("/api/expenses/view", (req, res) => {
     Expense.find().then((content) => {
@@ -150,7 +197,7 @@ router.get("/api/expenses/view", (req, res) => {
 // creating expenses
 router.post("/api/expenses/create", (req, res) => {
     const {name, price, amount} = req.body
-    Expense.create({name: name, price: price, amount: amount}).then((content) => {
+    Expense.create({name: name, price: price, amount: amount, date: Date.now(), user: req.user}).then((content) => {
         if(content) {
             console.log(content)
             res.redirect("/api/expenses/view")
@@ -194,11 +241,22 @@ router.get('/api/user/login', (req, res) => {
     res.render('login')
 })
 
-router.post('/api/user/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/login-success'}));
+router.post('/api/user/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/'}));
 
-router.get('/login-success', (req, res) => {
-    res.send("You logged in!")
+
+router.get('/api/user/logout', (req, res) => {
+    res.render("logout")
 })
+
+router.post('/api/user/logout', (req, res) => {
+    req.logOut((err) => {
+        if(err) {
+           console.log(err)
+        }
+        res.redirect('/api/user/login')
+    })
+})
+
 router.get('/login-failure', (req, res) => {
     res.send("You didn't login!")
 })

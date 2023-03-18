@@ -35,9 +35,8 @@ app.use(files({
 // use public for storing files
 app.use(express.static(path.join(__dirname, 'public')));
 // view engine first line to load images
-app.use(express.static( "public" ) );
 app.set("view engine", 'ejs');
-
+app.use(express.static(path.join(__dirname,  'dist')))
 // to use ejs 
 
 

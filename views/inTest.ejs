@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="h-[100vh]">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/output.css" rel="stylesheet">
+    <!-- JQuery -->
+    <script
+			  src="https://code.jquery.com/jquery-3.6.4.min.js"
+			  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+			  crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body onload="form.reset();" class="h-full">
+    <!-- -->
+    <div class="flex w-full h-full ">
+        <div class="bg-green-400 basis-1/5 w-full h-full ">
+            <form id="form" class="flex flex-col justify-between h-full" action="/api/invoice/create" method="post">
+                
+                <div id="addStuffTo" class="flex flex-col justify-center items-center">
+                    <h1 class="pl-4" >Manage</h1>
+                    
+                </div>
+                <div>
+                    <input type="text" readonly name="wholePrice" id="whole_price">
+                    <button type="submit">Check out</button>
+                </div>
+            </form>
+        </div>
+
+            <div class="bg-blue basis-4/5 w-full h-full">
+            <div class="grid grid-cols-4 gap-4 px-4">
+               
+                <% products.forEach((product) => { %>
+                <button onclick="addEle('<%= product.id %>')" href="">
+                    <div class="bg-green bg-green-400 rounded-3xl text-center p-4 flex flex-row" id="<%= product.id %>">
+                        <div class="basis-1/3">
+                            <img  src="<%= product.pic_url %>">
+                        </div >
+                        <div class="basis-2/3">
+                            <h1><%= product.name %></h1>
+                            <h1><%= product.price %>$</h1>
+                        </div>
+                    </div>
+                </button >
+               <% }) %>
+                   
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+    <script src="/js/main.js"></script>
+</body>
+</html>
