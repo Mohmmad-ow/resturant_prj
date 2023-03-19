@@ -3,7 +3,7 @@ const { render } = require('ejs');
 const passport = require('passport');
 const router = require('express').Router();
 // the User product and o
-const {User, Product, Invoice, Expense} = require('../config/database');
+const {User, Product, Invoice, Expense, Voucher, Category} = require('../config/database');
 const {genPassword} = require('../Utils/passwordVaild')
 
 // file system to delete images when they are edited out
@@ -15,6 +15,39 @@ const path = require('path')
 router.get('/', (req, res, next) => {
     console.log(req.user)
     res.render("home")
+})
+
+router.get('/settings', (req, res) => {
+    Voucher.find().then((voucher) => {
+
+        Category.find().then((category) => {
+
+            res.render('settings', {vouchers: voucher, categories: category})
+
+        }).catch(err => console.log(err))
+
+    }).catch(err => console.log(err))
+    
+})
+
+router.post('/api/voucher/create', (req, res) => {
+    const {code, value} = req.body
+
+    Voucher.create({code: code, value: value}).then((content) => {
+        console.log(content)
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
+
+})
+
+router.post('/api/category/create', (req, res) => {
+    console.log(req.body)
+    const {category} = req.body
+
+    Category.create({category: category}).then((content) => {
+        console.log(content)
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
 })
 
 router.get("/test", (req, res) => {
@@ -123,7 +156,11 @@ router.post("/api/products/delete/:id", (req, res) => {
 
 router.get("/api/invoice/view", (req, res) => {
     Product.find().then((content) => {
-        res.render("inTest", {products: content})
+        Voucher.find().then((voucher) => {
+
+            res.render("inTest", {products: content, vouchers: voucher})
+
+        }).catch(err => {console.log(err)})
 
     }).catch(err => {
         console.log(err)

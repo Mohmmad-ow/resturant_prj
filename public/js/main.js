@@ -187,3 +187,33 @@ function allTime() {
        
     }
 }
+
+
+function addVoucher(id, value){
+        let whole_value = document.getElementById("whole_price").value
+        whole_value = whole_value.slice(0, -1)
+
+        document.getElementById('whole_price').value = Number(whole_value) + Number(value)
+        console.log(whole_value,  value)
+        let ele = document.createElement('input')
+        ele.type = 'text'
+        ele.name = 'usedCode'
+        ele.value = id
+        ele.classList.add('hidden')
+        document.getElementById('form').appendChild(ele)
+
+}
+function checkVoucher() {
+    event.preventDefault()
+    let selectedVoucher = document.getElementById('voucher')
+    let codes = document.getElementById('codes').children
+    for (let i = 0; i < codes.length; i++) {
+        if(selectedVoucher.value == codes[i].innerHTML) {
+            console.log("This code works: " + selectedVoucher.value, codes[i].id.split('|'))
+            addVoucher(...codes[i].id.split('|'))
+            addVoucher(selectedVoucher.name, selectedVoucher.value)
+        } else {
+            console.log("this code doesn't work")
+        }
+    }
+}

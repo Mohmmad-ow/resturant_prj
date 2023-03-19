@@ -26,20 +26,10 @@ const ProductSchema = mongoose.Schema({
 
 const Product = mongoose.model('Product', ProductSchema)
 
-const InvoiceSchema = mongoose.Schema({
-    orderFood: [{
-        amount: Number,product: ProductSchema
-    }],
-    date: {type: Date, default: new Date()},
-    user: {type: UserSchema},
-    wholePrice: {type: Number}
-    
-})
-const Invoice = mongoose.model('Invoice', InvoiceSchema)
 
 const ExpenseSchema = mongoose.Schema({
-        name: String,
-        amount: String,
+    name: String,
+    amount: String,
         price: Number,
         date: {type: Date, default: new Date()},
         user: {type: UserSchema},
@@ -50,16 +40,31 @@ const Expense = mongoose.model('expense', ExpenseSchema)
 
 const VoucherSchema = mongoose.Schema({
     code: String,
-    value: Number
+    value: Number,
+    date: {type: Date, default: new Date()}
 })
 
 const Voucher = mongoose.model('voucher', VoucherSchema)
 
+const InvoiceSchema = mongoose.Schema({
+    orderFood: [{
+        amount: Number,product: ProductSchema
+    }],
+    date: {type: Date, default: new Date()},
+    user: {type: UserSchema},
+    wholePrice: {type: Number},
+    voucher: {type: VoucherSchema},
+    isDone: Boolean
+    
+})
+const Invoice = mongoose.model('Invoice', InvoiceSchema)
+
 const CategorySchema = mongoose.Schema({
-    category: String
+    category: String,
+    
 })
 
 const Category = mongoose.model('category', CategorySchema)
 
 
-module.exports = {User, Product, Invoice, Expense}
+module.exports = {User, Product, Invoice, Expense, Voucher, Category}

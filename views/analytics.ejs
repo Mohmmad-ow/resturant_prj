@@ -15,10 +15,10 @@
 </head>
 <style type="text/css">
 	.bg1{
-		background: #121421;
+		background: #1e202c;
 	}
 	.bg2{
-		background: #1e202c;
+		background: #0BCA8D;
 	}
 	.bg3{
 		background: #292b37;
@@ -91,10 +91,10 @@
 				</div>
 			</div>
 
-			<div class="p-0 bg1" style="height: 100vh;width: calc(100% - 320px)">
+			<div class="p-0 bg-white" style="height: 100vh;width: calc(100% - 320px)">
 				<div class="p-3">
-					<p class="float-left text-white font-weight-bold mb-0" style="font-size: 130%">Checkout</p>
-					<div id="back-button" class="btn bg-white float-right">Back</div>
+					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Checkout</p>
+					<div id="back-button" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</div>
 					<div style="clear: both;"></div>
 				</div>
 				<div class="dropdown text-center">
@@ -108,7 +108,7 @@
 					</div>
 					<input autocomplete="off" onchange="queryTime()" type="date" id="date" name="dropdown-item" href="#">
 				</div>
-				<div id="dates" style="height: calc(100vh - 120px);overflow-y: auto;">
+				<div id="dates" class="mt-9" style="height: calc(100vh - 120px);overflow-y: auto;">
 					<% checkouts.forEach(checkout => { %>
 					<div class="px-2" style="width: 800px;margin: auto">
 						<div class="btn bg2 text-white">

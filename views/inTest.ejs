@@ -23,6 +23,11 @@
                     
                 </div>
                 <div>
+                    <div class="">
+                       
+                        <input type="text" name="voucher" id="voucher">
+                        <button onclick="checkVoucher()">Add Voucher</button>
+                    </div>
                     <input type="text" readonly name="wholePrice" id="whole_price">
                     <button type="submit">Check out</button>
                 </div>
@@ -50,7 +55,11 @@
             </div>
         </div>
     </div>
-    
+    <div class="hidden" id="codes">
+        <% vouchers.forEach((voucher) => { %>
+            <h1 value="" name="" id="<%= voucher.id %>|<%= voucher.value %>"><%= voucher.code %></h1>
+        <% }) %>
+    </div>
 </div>
     <script src="/js/main.js"></script>
 </body>

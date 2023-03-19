@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+            <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+            <link href="/output.css" rel="stylesheet">
+	        <title>Doc</title>
+    </head>
+<style type="text/css">
+	.bg1{
+		background: #1e202c;
+	}
+	.bg2{
+		background: #0BCA8D;
+	}
+	.bg3{
+		background: #292b37;
+	}
+	.dot-pending{
+		color: #f8ca30;
+	}
+	.dot-danger{
+		color: #f8728a;
+	}
+	.dot-success{
+		color: #0bcb90;
+	}
+	*{
+		font-family: 'Arvo', serif;
+	}
+</style>
+<body>
+	<div class="container-fluid p-0">
+		<div class="row m-0">
+			<div class="p-2 bg2" style="height: 100vh;width: 320px;">
+				<p class="ml-1 font-weight-bold text-white" style="font-size: 130%">MANAGE</p>
+				
+				
+				<div class="row m-0">
+					<div class="col-12 p-1">
+						<div class="bg1 p-2" style="width: 100%;height: 55px;">
+							<div class="float-left mr-3 text-center bg3" style="width: 40px;height: 40px;">
+								<i class="fa fa-user-circle-o text-white" aria-hidden="true" style="font-size: 160%;line-height: 40px"></i>
+							</div>
+							<div class="float-left">
+								<p class="text-white mb-0">Ho Huu Vinh</p>
+								<p class="text-white mb-0" style="font-size: 80%;opacity: 0.7">Administrator</p>
+							</div>
+							<div class="bg2 float-right text-center" style="width: 40px;height: 100%;">
+								<i class="fa fa-power-off text-white" aria-hidden="true" style="font-size: 130%;line-height: 39px"></i>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 p-1" style="height: 80px;">
+						<div class="bg1 p-2" style="width: 100%;height: 100%;">
+							<p class="text-white mb-0" style="opacity: 0.7">Analytics</p>
+							<i class="fa fa-bar-chart text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
+						</div>
+					</div>
+					<div class="col-6 p-1" style="height: 80px;">
+						<div class="bg1 p-2" style="width: 100%;height: 100%;">
+							<p class="text-white mb-0" style="opacity: 0.7">Product</p>
+							<i class="fa fa fa-cutlery text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
+						</div>
+					</div>
+					<div class="col-6 p-1" style="height: 80px;">
+						<div class="bg1 p-2" style="width: 100%;height: 100%;">
+							<p class="text-white mb-0" style="opacity: 0.7">Customer</p>
+							<i class="fa fa fa-user-plus text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
+						</div>
+					</div>
+					<div class="col-6 p-1" style="height: 80px;">
+						<div class="bg1 p-2" style="width: 100%;height: 100%;">
+							<p class="text-white mb-0" style="opacity: 0.7">System</p>
+							<i class="fa fa-cogs text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
+						</div>
+					</div>
+					<div class="col-6 p-1" style="height: 80px;">
+						<div class="bg1 p-2" style="width: 100%;height: 100%;">
+							<p class="text-white mb-0" style="opacity: 0.7">Account</p>
+							<i class="fa fa fa fa-key text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="p-2" style="height: 100vh;width: calc(100% - 320px)">
+				<div class="p-3">
+					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Checkout</p>
+					<div id="back-button" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</div>
+					<div style="clear: both;"></div>
+				</div>
+                <div class="flex flex-row justify-between ">
+                    <div class="felx flex-col basis-2/5 w-full ">
+                        <h1 class="text-center text-3xl p-6">Voucher</h1>
+                        <table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
+                            <tr>
+                                <th class="p-2 border-slate-500 bg-green-700 text-white border">Code</th>
+                                <th class="p-2 border-slate-500 bg-green-700 text-white border">Price</th>
+                                <th class="p-2 border-slate-500 bg-green-700 text-white border">Method</th>
+                            </tr>
+                            <% vouchers.forEach((voucher) =>{ %>
+                            <tr>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border"><%= voucher.code %></th>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border"><%= voucher.value %>$</th>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border"><a href="/api/voucher/delete/<%= voucher.id %>">Delete</a></th>
+                                
+                            </tr>
+                            <% }) %>
+                           
+                        
+                    </table>
+                    <form action="/api/voucher/create" method="post">
+                        <div><input type="text" name="code" id="code"></div>
+                        <div><input type="text" name="value" id="value"></div>
+                        <div></div>
+                        <button>Submit</button>
+                    </form>
+                    </div>
+                    <div class="flex flex-col basis-2/5 w-full">
+                        <h1 class="text-center text-3xl p-6">Categories</h1>
+                        <table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
+                            <tr>
+                                <th>Type</th>
+                                <th>method</th>
+                            </tr>
+                            <% categories.forEach((category) => {  %>
+                            <tr>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border" ><%= category.category%></th>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border" ><a href="/api/category/delete/<%= category.id %>">Delete</a></th>
+                            </tr>
+                            <% }) %>
+                            
+                        </table>
+                        <form action="/api/category/create" method="post">
+                            <div><input type="text" name="category" id="category"></div>
+                            <button>Submit</button>
+                        </form>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
