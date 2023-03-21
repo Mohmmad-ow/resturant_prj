@@ -34,6 +34,7 @@ app.use(files({
   
 // use public for storing files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules/flowbite')));
 // view engine first line to load images
 app.set("view engine", 'ejs');
 app.use(express.static(path.join(__dirname,  'dist')))

@@ -3,7 +3,11 @@
 <head>
 	<title>Profit</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet">
+
+    
+
 </head>
 <body>
 <div class="flex-container">
@@ -28,15 +32,17 @@
 	</div>
     
 	<div class="grid-container" style="line-height: 50px;">
-        <div style="direction:ltr;color:#000;position: absolute;background: none;border: none;margin: auto;top: -25px;width: 50%;">
+        <div class="text-black" style="direction:ltr;color:#000;position: absolute;background: none;border: none;margin: auto;top: -25px;width: 50%;">
+			
+            <form  action="/profits" method="post">
+                <label style="font-size: 18px;" for="date-input">Choose a date:</label>
+                <input type="date" id="date-input" name="date">
+                <input type="submit" class="btn" style="width: 15%;
+                font-size: 15px;
+                height: 30px;" value="Select Date" onclick="">
+            </form>
             
-            <label style="font-size: 18px;" for="date-input">Choose a date:</label>
-            <input type="date" id="date-input" name="date-input">
-            <input type="button" class="btn" style="width: 15%;
-            font-size: 15px;
-            height: 30px;" value="Select Date" onclick="">
-            <button class="btn" style="margin-left: 350px;">Back</button>
-        </div>
+            </div>
         <table class="table" style=" width: 110vh; ">
             <tr><td colspan="3" style="text-align: center;">Date 20/3/2023</td></tr>
             <tr  style="line-height: 0%;">
@@ -53,5 +59,10 @@
         </table>
 	</div>
 </div>
+<script src="/js/main.js" defer></script>
+	
+<script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+
 </body>
 </html>

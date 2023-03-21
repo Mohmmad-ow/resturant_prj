@@ -2,6 +2,7 @@
 const { render } = require('ejs');
 const passport = require('passport');
 const router = require('express').Router();
+const moment = require('moment')
 // the User product and o
 const {User, Product, Invoice, Expense, Voucher, Category} = require('../config/database');
 const {genPassword} = require('../Utils/passwordVaild')
@@ -180,8 +181,7 @@ router.get("/api/invoice/v/:id", (req, res) => {
 router.get("/api/invoice/v/", (req, res) => {
     Invoice.find().then(content => {
         
-        
-        // res.render("invoice-view", {Invoices: content})
+        content = content.reverse()
         res.render('analytics', {checkouts: content})
     }).catch(err => console.log(err))
 })
@@ -195,12 +195,16 @@ router.get("/api/invoice/create", (req, res) => {
 
 router.post('/api/invoice/create', (req, res) => {
     console.log(req.body)
-    let wholePrice = req.body.wholePrice
-    wholePrice = Number(wholePrice.slice(0, -1))
+    console.log(Object.keys(req.body))
+    
    let ids = Object.keys(req.body).filter( (id) => {
-       return req.body[id]
+        if (id != 'voucher' && id != 'wholePrice' && id != 'usedCode') {
+            return id
+        }
+
     })
-    ids.pop()
+    const wholePrice = Number(req.body.wholePrice.slice(0, -1))
+    const usedCode = req.body.usedCode
     
 
     Product.find({_id:{$in: ids}}).then((products) => {
@@ -211,16 +215,106 @@ router.post('/api/invoice/create', (req, res) => {
             console.log(obj['product'].price*obj.amount)
             return obj['product'].price*obj.amount
           })
-        console.log(payment)
-        console.log(orderObject)
-        Invoice.create({orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice}).then((content) => {
-            console.log(content)
+        Voucher.deleteMany({_id: {$in: usedCode}}).then((voucher) => {
+            console.log("these have been removed: " + voucher)
+            console.log(payment)
+            console.log(orderObject)
+            Invoice.create({orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice}).then((content) => {
+                console.log(content)
+            })
         }).catch(err => {console.log(err)})
     }).catch(err => {
         console.log(err)
     })
     
     
+})
+
+// View profits 
+router.get('/profits', (req, res) => {
+    console.log(req.body)
+    Invoice.find().then((checkouts) => {
+        Expense.find().then((expenses) => {
+            const totalSold = checkouts.map((checkout) => {
+            
+                return checkout.wholePrice
+            
+            }).reduce((a, b) => a+b, 0)
+
+            const totalExpenses = expenses.map((expense) => {
+            
+                return expense.price
+            }).reduce((a, b) => a+b, 0)
+
+            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalSold-totalExpenses})
+
+        }).catch(err => console.log(err))
+
+    }).catch(err => console.log(err))
+})
+
+
+router.post('/profits', (req, res) => {
+    
+    let selectedDate, momentJsStart, startDate, momentJsEnd, endDate
+    if (req.body.date != undefined) {
+        selectedDate = req.body.date
+        momentJsStart = moment(selectedDate, "YYYY-MM-DD")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'day')
+        endDate = momentJsEnd.toDate()
+        
+        
+    } else if (req.body.month != undefined) {
+        selectedDate = req.body.month
+        momentJsStart = moment(new Date().getFullYear() +'-'+ selectedDate, "YYYY-MM")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'months')
+        endDate = momentJsEnd.toDate()
+        
+        
+    } else if (req.body.year != undefined) {
+        selectedDate = req.body.year
+        momentJsStart = moment(selectedDate, "YYYY")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'year')
+        endDate = momentJsEnd.toDate()
+        
+    } else {
+        selectedDate = req.body.chooseBetween
+        momentJsStart = moment(selectedDate[0], "YYYY-MM-DD")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = moment(selectedDate[1])
+        endDate = momentJsEnd.toDate()
+        
+    }
+
+    Invoice.find({ date:  {
+        '$gt':  startDate,
+        '$lt':  endDate
+    } }).then((checkouts) => {
+        Expense.find({ date:  {
+            '$gt':  startDate,
+            '$lt':  endDate
+        } }).then((expenses) => {
+            const totalSold = checkouts.map((checkout) => {
+            
+                return checkout.wholePrice
+            
+            }).reduce((a, b) => a+b, 0)
+
+            const totalExpenses = expenses.map((expense) => {
+            
+                return expense.price
+            }).reduce((a, b) => a+b, 0)
+            console.log(totalExpenses, totalSold, totalExpenses - totalSold)
+            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalExpenses-totalSold})
+
+        }).catch(err => console.log(err))
+
+    }).catch(err => console.log(err))
+
+
 })
 
 // expresses
@@ -243,6 +337,22 @@ router.post("/api/expenses/create", (req, res) => {
         console.log(err)
     })
 
+})
+
+router.post("/api/category/delete/:id", (req, res) => {
+    const id = req.params.id
+    Category.findByIdAndDelete(id).then((content) => {
+        console.log(content)
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
+})
+
+router.post("/api/voucher/delete/:id", (req, res) => {
+    const id = req.params.id
+    Voucher.findByIdAndDelete(id).then((content) => {
+        console.log(content)
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
 })
 
 

@@ -1,5 +1,25 @@
 // const moment = require("moment/moment")
+function viewVoucher() {
+    event.preventDefault()
+    document.getElementById('voucher_button').classList.add('hidden')
+    document.getElementById('view_voucher').classList.remove('hidden')
+}
+// <!-- thing[i] => [0] => [0] => [1] => [0] -->
+function findFood() {
+    let list = document.getElementById('foods').children
+    for(let i = 0; i < list.length; i++) {
+        let x = document.getElementById('findFood').value
+        x  = x.length
+        console.log(x)
+        console.log(list[i].children[0].children[1].children[0].innerHTML.slice(0, x), document.getElementById('findFood').value)
+        if (document.getElementById('findFood').value.slice(0, x) != list[i].children[0].children[1].children[0].innerHTML.slice(0, x)) {
+            list[i].classList.add('hidden')
+        } else {
+            list[i].classList.remove('hidden')
+        }
+    }
 
+}
 
 
 function removeEle(id) {
@@ -40,7 +60,7 @@ function addEle(id) {
     let returnEle = document.createElement("div")
     returnEle.id = ("order_" + id)
 
-    let divArray = ["bg-green-800", "rounded-md", "text-center" ,"p-1", "flex" ,"flex-row", "w-72" ,"h-16"].map((ele) => {
+    let divArray = ["bg-white", "p-x","mt-3" ,"rounded-md", "text-center" ,"p-1", "flex" ,"flex-row", "w-72" ,"h-16"].map((ele) => {
         returnEle.classList.add(ele)
         
     })
@@ -188,12 +208,16 @@ function allTime() {
     }
 }
 
+function profits() {
+
+}
+
 
 function addVoucher(id, value){
         let whole_value = document.getElementById("whole_price").value
         whole_value = whole_value.slice(0, -1)
 
-        document.getElementById('whole_price').value = Number(whole_value) + Number(value)
+        document.getElementById('whole_price').value = (Number(whole_value) - Number(value)) + "$" 
         console.log(whole_value,  value)
         let ele = document.createElement('input')
         ele.type = 'text'
@@ -201,7 +225,8 @@ function addVoucher(id, value){
         ele.value = id
         ele.classList.add('hidden')
         document.getElementById('form').appendChild(ele)
-
+        let selectedVoucher = document.getElementById('voucher')
+        selectedVoucher.value = ""
 }
 function checkVoucher() {
     event.preventDefault()
@@ -211,9 +236,24 @@ function checkVoucher() {
         if(selectedVoucher.value == codes[i].innerHTML) {
             console.log("This code works: " + selectedVoucher.value, codes[i].id.split('|'))
             addVoucher(...codes[i].id.split('|'))
-            addVoucher(selectedVoucher.name, selectedVoucher.value)
+            codes[i].remove()
+            // addVoucher(selectedVoucher.name, selectedVoucher.value)
         } else {
             console.log("this code doesn't work")
         }
     }
+}
+
+
+
+function viewHidden(viewId) {
+    console.log('You triggerd a function')
+    let list = ['chooseDate', 'selectMonth', 'selectYear', 'chooseBetween'].map((id) => {
+        if (id == viewId)
+        {
+            document.getElementById(id).classList.remove('hidden')
+        } else {
+            document.getElementById(id).classList.add('hidden')
+        }
+    })
 }

@@ -107,7 +107,11 @@
                             <tr>
                                 <th class="p-2 border-slate-500 bg-green-400 text-white border"><%= voucher.code %></th>
                                 <th class="p-2 border-slate-500 bg-green-400 text-white border"><%= voucher.value %>$</th>
-                                <th class="p-2 border-slate-500 bg-green-400 text-white border"><a href="/api/voucher/delete/<%= voucher.id %>">Delete</a></th>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border">
+									<form action="/api/voucher/delete/<%= voucher.id %>" method="post">
+										<button class="hover:text-gray-900">Delete</button>
+									</form>
+								</th>
                                 
                             </tr>
                             <% }) %>
@@ -131,7 +135,11 @@
                             <% categories.forEach((category) => {  %>
                             <tr>
                                 <th class="p-2 border-slate-500 bg-green-400 text-white border" ><%= category.category%></th>
-                                <th class="p-2 border-slate-500 bg-green-400 text-white border" ><a href="/api/category/delete/<%= category.id %>">Delete</a></th>
+                                <th class="p-2 border-slate-500 bg-green-400 text-white border">
+									<form action="/api/category/delete/<%= category.id %>" method="post">
+										<button class="hover:text-gray-900">Delete</button>
+									</form>
+								</th>
                             </tr>
                             <% }) %>
                             
