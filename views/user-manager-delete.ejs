@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head">
+	<title>Profit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet">
+
+    
+
+</head>
+<body>
+    <div class="flex-container min-h-[100vh] justify-center items-center">
+        
+        <form class="w-[40%] bg-green-400 p-8 rounded-2xl text-white" action="/api/users/manage-users/delete/<%= user.id %>" method="post">
+            <div class="bg-green-400 p-4 text-white">
+                <h1 class="text-left">Full Name: <%= user.fullName %></h1>
+                <h1 class="text-left">Email: <%= user.email %></h1>
+                <h1 class="text-left mt-12">Is a worker: <%= user.isWorker %></h1>
+                <h1 class="text-left">Is an admin: <%= user.isAdmin %></h1>
+                
+                
+            </div>
+
+            <h1 class="text-center py-3">Edit User Info</h1>
+            
+           
+            <div class="text-center p-2 bg-red-300 rounded-2xl ">
+                <h1 class="text-red-500">Are you sure you want to delete the user</h1>
+                
+            </div>
+            
+            <div class="flex justify-center">
+                <button class="bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center mt-6 hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+<script src="/js/main.js" defer></script>
+	
+<script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Users</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="flex-container">
+	<div class="main-list" style="background-color: #0bca8d;width:460px;">
+		<h1>Dashborad</h1>
+		<div style="display: inline-flex;width: 100%;color: #000000;background-color: #ffffff;">
+			<div style="font-size: 15px;margin-top: 29px;line-height: 1.2;margin-right: 93px;">
+				<h2>ROONY</h2>
+				<p>AD-IOS</p>
+			</div>
+			<img src="admin.jpg" style="width: 100px;height: 100px;margin-right: 45px;"/>
+		</div>
+		<div class="setting-list">
+			<div>Setting</div>
+			<div>Product</div>
+			<div>Profit</div>
+			<div>Expenses </div>
+			<div>Invoice</div>
+			<div>Users</div>
+			<div>Log out</div>
+		</div>
+	</div>
+    
+	<div id="userpage" style="padding-top: 75px;">
+                <div class="container">
+                   <table class="users-info">
+                            <tr>
+                                <th>Sequenece</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                 <th>permissions</th>
+                                <th>Method</th>
+                            </tr>  
+                            <% for (let i = 0; i < users.length; i++) { %>
+                            <tr> 
+                                <td><%= i+1 %></td>
+                                <td><%= users[i].fullName %></td>
+                                <td><%= users[i].email %></td>
+                                <% if (users[i].isAdmin == true) { %>
+                                   <td>Is Admin</td>
+                                <% } else { %>
+                                    <td>Is Worker</td>
+                                <% } %>
+                                <td>
+                                    <a href="/api/users/manage-users/edit/<%= users[i].id %>">
+                                            <button class="btn">Edit</button>
+                                        </a>
+                                    <a href="/api/users/manage-users/delete/<%= users[i].id %>">
+                                        <button class="btn">Delete</button>   
+                                    </a>
+                                </td>
+                            </tr>
+                            <% } %>
+                   </table>
+                </div>
+                    <div class="container">
+                        <div class="addnew-user-customer-details">
+                                    <p style="color: red"></p>
+                                  <h3>Add New User</h3>
+                                <form action="/api/users/register" method="post">
+                                    <div class="form-control">
+                                    
+                                        <input type="text" placeholder="Full Name" name="fullName" />
+                                    </div>
+                                   
+                                    <div class="form-control">
+                                    
+                                        <input type="email" placeholder="Email" name="email" />
+                                    </div>
+                                    <div class="form-control">
+                                    
+                                        <input type="password" placeholder="Password" name="password" />
+                                    </div>
+                                    <button class="btn">Add</button>
+                                </form>
+                        </div>
+                    </div>
+
+	</div>
+</div>
+</body>
+</html>

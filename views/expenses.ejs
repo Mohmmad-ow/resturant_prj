@@ -4,6 +4,7 @@
 	<title>Expenses</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/output.css">
 </head>
 <body>
 <div class="flex-container">
@@ -40,10 +41,11 @@
                 <div class="container">
                    <table class="users-info" style="width: 70%;">
                             <tr>
-                                <th>Sequenece</th>
+                                <th>Sequence</th>
                                 <th>Item</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Method</th>
                             </tr>
                             <% for (let i = 0; i < expenses.length; i++) { %>
                             <tr> 
@@ -51,21 +53,14 @@
                                 <td><%= expenses[i].name %></td>
                                 <td><%= expenses[i].amount %></td>
                                 <td><%= expenses[i].price %>$</td>
+                                <td>
+                                    <a href="/api/expenses/delete/<%= expenses[i].id %>" class="p-3 rounded-xl bg-red-300 text-red-600 hover:bg-red-500 hover:text-red-700">Delete</a>
+                                    <a href="/api/expenses/edit/<%= expenses[i].id %>" class="p-3 rounded-xl bg-white text-black hover:bg-black hover:text-white">Edit</a>
+                                </td>
                               
                             </tr>
                             <% } %>
-                            <tr> 
-                                <td>2</td>
-                                <td>Roony</td>
-                                <td>Revenge</td>
-                                <td>Revenge</td>
-                            </tr>
-                            <tr> 
-                                <td>3</td>
-                                <td>Roony</td>
-                                <td>Revenge</td>
-                                <td>Revenge</td>
-                            </tr>
+                            
                    </table>
                 </div>
                     <div class="container">

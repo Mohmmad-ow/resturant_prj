@@ -41,16 +41,35 @@ function findSum(id) {
     
 }
 
-function sumForItem(id) {
 
+
+
+function onUpKey(id){
+    let add = Number(document.getElementById(id).children[1].children[1].innerHTML.slice(0, -1))
+    let newVal = Number(document.getElementById('whole_price').value.slice(0,-1)) + add
+    console.log(newVal)
+    document.getElementById('whole_price').value = newVal + "$"
+    return
+}
+function onDownKey(id){
+    let sub = Number(document.getElementById(id).children[1].children[1].innerHTML.slice(0, -1))
+    let newVal = Number(document.getElementById('whole_price').value.slice(0,-1)) - sub
+    console.log(newVal)
+
+    document.getElementById('whole_price').value = newVal + "$"
+    return
 }
 
 function addEle(id) {
     let parent = document.getElementById("addStuffTo").children
-
+    let hiddenPrice = document.createElement('h1')
+    hiddenPrice.classList.add('hidden')
+    hiddenPrice.innerHTML = Number(document.getElementById(id).children[1].children[1].innerHTML.slice(0, -1))
+    
     for (let i = 0; i < parent.length; i++) {
         if (parent[i].id == "order_"+id) {
              let num = Number(parent[i].children[1].children[0].children[1].value)
+             console.log(num)
              parent[i].children[1].children[0].children[1].value = num + 1
              findSum(id)
              return
@@ -89,12 +108,16 @@ function addEle(id) {
     count.classList.add('h-6')
     count.type = 'number'
     count.name = id
-    count.value = '1'
+    count.onkeydown = () => { return false }
     count.min = '1'
+    count.value = '1'
+   count.onpointerup = () => {onUpKey(id)}
+   count.onpointerdown = () => {onDownKey(id)}
     
     ChildDiv2.innerHTML = product[1].children[0].innerHTML
     ParentDiv2.appendChild(ChildDiv2)
     ParentDiv2.appendChild(count)
+    
     div2.appendChild(ParentDiv2)
 
    
@@ -108,9 +131,10 @@ function addEle(id) {
     ogDiv3.innerHTML = "X"
     ogDiv3.classList.add('bg-black-900')
     ogDiv3.onclick = () => { removeEle("order_" + id); }
-        div3.appendChild(ogDiv3)
+    div3.appendChild(ogDiv3)
     
     div2.appendChild(div3)
+    div2.appendChild(hiddenPrice)
     returnEle.appendChild(div1)
     returnEle.appendChild(div2)
     
@@ -158,13 +182,18 @@ function thisDay() {
         } 
 
         let [month, day, year] = times[key].children[0].children[0].innerHTML.split('/')
+        console.log(times[key].children[0].children[0].innerHTML)
         year = year.split(',')[0]
+        console.log(year + " " + month + " " + day)
         let i = moment(year + '-' + month + '-' + day, "YYYY-MM-DD")
+        console.log("This is :"+ i)
         if (!i.isSame(selectedDate)) {
-            console.log(times[key])
+            console.log("Add hidden")
+
             times[key].classList.add('hidden')
         } else {
             times[key].classList.remove('hidden')
+            console.log("remove hidden")
         }
     }
 }
@@ -201,16 +230,10 @@ function allTime() {
         if (key == "item") {
             return
         }
-
-       
         times[key].classList.remove('hidden')
-       
     }
 }
 
-function profits() {
-
-}
 
 
 function addVoucher(id, value){
@@ -225,9 +248,12 @@ function addVoucher(id, value){
         ele.value = id
         ele.classList.add('hidden')
         document.getElementById('form').appendChild(ele)
-        let selectedVoucher = document.getElementById('voucher')
-        selectedVoucher.value = ""
+        let selectedVoucher = document.getElementById('voucherValue')
+        selectedVoucher.value = Number(value)
+        let x = document.getElementById('voucher')
+        x.value = ""
 }
+
 function checkVoucher() {
     event.preventDefault()
     let selectedVoucher = document.getElementById('voucher')
@@ -237,7 +263,6 @@ function checkVoucher() {
             console.log("This code works: " + selectedVoucher.value, codes[i].id.split('|'))
             addVoucher(...codes[i].id.split('|'))
             codes[i].remove()
-            // addVoucher(selectedVoucher.name, selectedVoucher.value)
         } else {
             console.log("this code doesn't work")
         }
@@ -247,7 +272,6 @@ function checkVoucher() {
 
 
 function viewHidden(viewId) {
-    console.log('You triggerd a function')
     let list = ['chooseDate', 'selectMonth', 'selectYear', 'chooseBetween'].map((id) => {
         if (id == viewId)
         {
@@ -257,3 +281,12 @@ function viewHidden(viewId) {
         }
     })
 }
+
+
+function goBack() {
+    let form = document.getElementById('form')
+    document.getElementById('finish').value = 'No'
+    console.log(document.createElement('finish').value)
+    form.submit()
+}
+

@@ -94,7 +94,7 @@
 					<div id="back-button" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</div>
 					<div style="clear: both;"></div>
 				</div>
-                <div class="flex flex-row justify-between ">
+                <div class="flex flex-row justify-between px-16">
                     <div class="felx flex-col basis-2/5 w-full ">
                         <h1 class="text-center text-3xl p-6">Voucher</h1>
                         <table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
@@ -124,6 +124,32 @@
                         <div></div>
                         <button>Submit</button>
                     </form>
+					<div class="mt-32">
+						<table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
+							<tr>
+								<th class="p-2 border-slate-500 bg-green-700 text-white border">Table Number</th>
+								<th class="p-2 border-slate-500 bg-green-700 text-white border">is Free</th>
+								<th class="p-2 border-slate-500 bg-green-700 text-white border">Method</th>
+							</tr>
+							
+								<% for (let i = 0; i < tables.length; i++) { %>
+								<tr>
+									<th class="p-2 border-slate-500 bg-green-400 text-white border"><%= tables[i].tableNumber %></th>
+									<th class="p-2 border-slate-500 bg-green-400 text-white border"><%= tables[i].isFree %></th>
+									<th class="p-2 border-slate-500 bg-green-400 text-white border">
+										<form action="/api/tables/delete/<%= tables[i].id %>" method="post">
+											<button class="hover:text-gray-900">Delete</button>
+										</form>
+									</th>
+								</tr>
+								<% } %>
+						</table>
+						<form action="/api/tables/create" method="post">
+							<label for="tableNumber"></label>
+							<input type="number" min="0" name="tableNumber" id="tableNumber">
+							<button type="submit">Add Table</button>
+						</form>
+					</div>
                     </div>
                     <div class="flex flex-col basis-2/5 w-full">
                         <h1 class="text-center text-3xl p-6">Categories</h1>

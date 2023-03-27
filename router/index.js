@@ -1,21 +1,33 @@
 // Required Packages and functions
 const { render } = require('ejs');
+// passport js is for user auth
 const passport = require('passport');
+// Router to create routs and export them for app.js
 const router = require('express').Router();
-const moment = require('moment')
-// the User product and o
-const {User, Product, Invoice, Expense, Voucher, Category} = require('../config/database');
-const {genPassword} = require('../Utils/passwordVaild')
 
+
+
+// the User, product, invoice (checkout), expenses, voucher, category and table DB tables
+const {User, Product, Invoice, Expense, Voucher, Category, Table} = require('../config/database');
+// Genpass and ValidPass for creating and validating users
+const {genPassword, validPassword} = require('../Utils/passwordVaild')
+// makepdf to create a printed form of the checkout, isAdmin and isWorker is for user permissions
+const {makePdf, isAdmin, isWorker} = require('./Middleware')
 // file system to delete images when they are edited out
 const fs = require("fs")
 
 // we need path to go one level up when uploading pics
 const path = require('path')
 
-router.get('/', (req, res, next) => {
-    console.log(req.user)
-    res.render("home")
+
+// Home page
+router.get('/', isWorker,(req, res, next) => {
+    Table.find().then((content) => {
+        content = content.sort((a, b) => {return a.tableNumber - b.tableNumber})
+        console.log(content)
+        res.render("home", {tables: content, user: req.user, message: req.session.message})
+        delete req.session.message
+    }).catch(err => console.log(err))
 })
 
 router.get('/settings', (req, res) => {
@@ -23,7 +35,12 @@ router.get('/settings', (req, res) => {
 
         Category.find().then((category) => {
 
-            res.render('settings', {vouchers: voucher, categories: category})
+            Table.find().then((table) => {
+                table = table.sort((a, b) => {return a.tableNumber - b.tableNumber})
+                console.log(table)
+                res.render('settings', {vouchers: voucher, categories: category, tables: table})
+
+            }).catch(err => console.log(err))
 
         }).catch(err => console.log(err))
 
@@ -31,6 +48,28 @@ router.get('/settings', (req, res) => {
     
 })
 
+// table CRUD
+router.post('/api/tables/create', (req, res) => {
+    const number = req.body.tableNumber
+
+    Table.create({tableNumber: number, isFree: true}).then((table) => {
+        console.log(table)
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
+})
+
+router.post('/api/tables/delete/:id', (req, res) => {
+    const id = req.params.id
+
+    Table.findByIdAndDelete(id).then((content) => {
+
+        console.log(content)
+
+        res.redirect('/settings')
+    }).catch(err => console.log(err))
+})
+
+// Voucher CRUD
 router.post('/api/voucher/create', (req, res) => {
     const {code, value} = req.body
 
@@ -41,6 +80,7 @@ router.post('/api/voucher/create', (req, res) => {
 
 })
 
+// Category CURD
 router.post('/api/category/create', (req, res) => {
     console.log(req.body)
     const {category} = req.body
@@ -51,12 +91,12 @@ router.post('/api/category/create', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.get("/test", (req, res) => {
-    res.render('test')
-})
-// upload images
+// Products - CRUD 
 router.get('/api/products/create', (req, res) => {
-    res.render('product-create')
+    Category.find().then((categories) => {
+
+        res.render('product-create', {categories: categories})
+    }).catch(err => console.log(err))
 })
 
 
@@ -86,7 +126,7 @@ router.post('/api/products/create', (req, res) => {
 
 router.get('/api/products/view', (req, res) => {
     Product.find().then((content) => {
-        res.render("product", {products: content})
+        res.render("product", {products: content, user: req.user})
     }).catch((err) => {
         console.log(err)
     })
@@ -132,7 +172,6 @@ router.post("/api/products/edit/:id", (req, res) => {
 
 })
 
-// Product delete
 router.get("/api/products/delete/:id", (req, res) => {
     const id = req.params.id;
     res.render("product-delete", {id: id})
@@ -152,14 +191,14 @@ router.post("/api/products/delete/:id", (req, res) => {
     }).catch(err => console.log(err))
 })
 
-// Ordering inVoice
+// Invoice - CRUD
 
 
-router.get("/api/invoice/view", (req, res) => {
+router.get("/api/invoice/create/:tableNumber", (req, res) => {
     Product.find().then((content) => {
         Voucher.find().then((voucher) => {
 
-            res.render("inTest", {products: content, vouchers: voucher})
+            res.render("invoice-create", {products: content, vouchers: voucher, tableNumber: req.params.tableNumber})
 
         }).catch(err => {console.log(err)})
 
@@ -169,7 +208,7 @@ router.get("/api/invoice/view", (req, res) => {
 })
 
 // invoice is gonna be viewed by id at first but later by table number
-router.get("/api/invoice/v/:id", (req, res) => {
+router.get("/api/invoice/view/:id", (req, res) => {
     const id = req.params.id;
     Invoice.findById(id).then((invoice) => {
         res.render("invoice", {invoice: invoice})
@@ -177,8 +216,8 @@ router.get("/api/invoice/v/:id", (req, res) => {
 })
 
 
-// view all invoices
-router.get("/api/invoice/v/", (req, res) => {
+// view all invoices - as analytics
+router.get("/api/invoice/analytics/", (req, res) => {
     Invoice.find().then(content => {
         
         content = content.reverse()
@@ -186,26 +225,18 @@ router.get("/api/invoice/v/", (req, res) => {
     }).catch(err => console.log(err))
 })
 
-
-router.get("/api/invoice/create", (req, res) => {
-    Product.find().then((products) => {
-        res.render('invoice-create', {products: products})
-    })
-})
-
-router.post('/api/invoice/create', (req, res) => {
+router.post('/api/invoice/create/:tableNumber', (req, res) => {
     console.log(req.body)
     console.log(Object.keys(req.body))
     
    let ids = Object.keys(req.body).filter( (id) => {
-        if (id != 'voucher' && id != 'wholePrice' && id != 'usedCode') {
+        if (id != 'voucher' && id != 'wholePrice' && id != 'usedCode' && id !='finish') {
             return id
         }
 
     })
     const wholePrice = Number(req.body.wholePrice.slice(0, -1))
     const usedCode = req.body.usedCode
-    
 
     Product.find({_id:{$in: ids}}).then((products) => {
         let orderObject = products.map((product) => {
@@ -219,15 +250,134 @@ router.post('/api/invoice/create', (req, res) => {
             console.log("these have been removed: " + voucher)
             console.log(payment)
             console.log(orderObject)
-            Invoice.create({orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice}).then((content) => {
+            Invoice.create({tableNumber: req.params.tableNumber ,orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice, isDone: false, voucher: req.body.voucherValue}).then((content) => {
                 console.log(content)
+                if (req.body.finish == "Yes") {
+                    console.log("table empty")
+                    Table.findOneAndUpdate({tableNumber: req.params.tableNumber}, {invoiceID: content.id, isFree: false}).then((table) => {
+                        console.log(table.invoiceID)
+                        res.redirect('/api/invoice/checkout/'+content.id)
+                    })
+                } else {
+                    res.redirect('/')
+                    console.log("Table still in progress")
+                }
             })
+
         }).catch(err => {console.log(err)})
     }).catch(err => {
         console.log(err)
     })
     
     
+})
+
+router.get('/api/invoice/edit/:tableNumber', (req, res) => {
+
+    Table.findOne({tableNumber: req.params.tableNumber}).then((table) => {
+        
+        Invoice.findOne({_id: table.invoiceID}).then((content) => {
+
+            Voucher.find().then((vouchers) => {
+                Product.find().then((products) => {
+
+                    res.render('invoice-edit', {order: content, vouchers: vouchers, tableNumber: req.params.tableNumber, products: products})
+                }).catch(err => console.log(err))
+
+            }).catch(err => console.log(err))
+            console.log(content)
+
+        }).catch(err => console.log(err))
+
+    }).catch(err => console.log(err))
+})
+
+router.post("/api/invoice/edit/:tableNumber", (req, res) => {
+    console.log(req.body)
+    console.log(Object.keys(req.body))
+    
+   let ids = Object.keys(req.body).filter( (id) => {
+        if (id != 'voucher' && id != 'wholePrice' && id != 'usedCode' && id !='finish' && id != 'voucherValue') {
+            return id
+        }
+
+    })
+    const wholePrice = Number(req.body.wholePrice.slice(0, -1))
+    const usedCode = req.body.usedCode
+
+
+    Product.find({_id:{$in: ids}}).then((products) => {
+        let orderObject = products.map((product) => {
+            return {amount: req.body[product.id], product: product}
+        })
+        payment = orderObject.map(obj => {
+            console.log(obj['product'].price*obj.amount)
+            return obj['product'].price*obj.amount
+          })
+        Voucher.deleteMany({_id: {$in: usedCode}}).then((voucher) => {
+            console.log("these have been removed: " + voucher)
+            console.log(payment)
+            console.log(orderObject)
+            Table.findOne({tableNumber: req.params.tableNumber}).then((table) => {
+
+                Invoice.findOneAndUpdate({_id: table.invoiceID},{tableNumber: req.params.tableNumber ,orderFood: orderObject, date: Date.now(), user: req.user, wholePrice: wholePrice, isDone: false, voucher: req.body.voucherValue}).then((content) => {
+                    console.log(content)
+                    if (req.body.finish == "Yes") {
+                        console.log("table empty")
+                        Table.findOneAndUpdate({tableNumber: req.params.tableNumber}, {invoiceID: content.id, isFree: false}).then((table) => {
+                            console.log(table.invoiceID)
+                            res.redirect('/api/invoice/checkout/'+content.id)
+                        })
+                    } else {
+                        res.redirect('/')
+                        console.log("Table still in progress")
+                    }
+                }).catch(err => console.log(err))
+            
+            }).catch(err => console.log(err))
+
+        }).catch(err => {console.log(err)})
+    }).catch(err => {
+        console.log(err)
+    })
+    
+})
+
+// checkout to view and print
+router.get('/api/invoice/checkout/:id', (req, res) => {
+    const id = req.params.id
+    Invoice.findById(id).then((content) => {
+        res.render('checkout', {order: content})
+    })
+})
+
+// only checkout and make the table free
+router.post('/api/invoice/checkout/:id', (req, res) => {
+    Invoice.findOne({_id: req.params.id}).then((order) => {
+
+        Table.findOneAndUpdate({tableNumber: order.tableNumber}, {isFree: true}).then((no) => {
+            console.log("table is free")
+            res.redirect('/')
+        })
+    })
+})
+
+// print the order
+router.post('/api/invoice/checkout/:id/print', (req, res) => {
+    const id = req.params.id
+        
+        console.log(req.body)
+        let {received, returned} = req.body
+        returned = returned.slice(0, -1)
+        Invoice.findById(id).then((order) => {
+
+            Table.findOneAndUpdate({tableNumber: order.tableNumber}, {isFree: true}).then((content) => {
+
+                makePdf(order, res, received, returned)
+            })
+        }).catch(err => console.log(err))
+    
+
 })
 
 // View profits 
@@ -253,7 +403,7 @@ router.get('/profits', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-
+// View the profits by the day. month, year and choose between the dates
 router.post('/profits', (req, res) => {
     
     let selectedDate, momentJsStart, startDate, momentJsEnd, endDate
@@ -336,8 +486,31 @@ router.post("/api/expenses/create", (req, res) => {
     }).catch((err) => {
         console.log(err)
     })
-
 })
+
+router.get('/api/expenses/delete/:id', (req, res) => {
+    res.render('expenses-delete', {id: req.params.id, user: req.user})
+})
+
+router.post('/api/expenses/delete/:id', (req, res) => {
+    Expense.findOneAndDelete({_id: req.params.id}).then((expense) => {
+        console.log(expense)
+        res.redirect('/api/expenses/view')
+    }).catch(err => console.log(err))
+})
+
+router.get('/api/expenses/edit/:id', (req, res) => {
+    res.render('expenses-edit', {id: req.params.id, user: req.user})
+})
+
+router.post('/api/expenses/edit/:id', (req, res) => {
+    const {item, quantity, price} = req.body
+    Expense.findByIdAndUpdate({_id: req.params.id}, {name: item, amount: quantity, price: price, user: req.user, date: Date.now()}).then((expense) => {
+        console.log(expense)
+        res.redirect('/api/expenses/view')
+    }).catch(err => console.log(err))
+})
+
 
 router.post("/api/category/delete/:id", (req, res) => {
     const id = req.params.id
@@ -356,15 +529,12 @@ router.post("/api/voucher/delete/:id", (req, res) => {
 })
 
 
-// user api
-
-
-// register user
-router.get('/api/user/register', (req, res) => {
+// User - CRUD and methods
+router.get('/api/users/register', (req, res) => {
     res.render("register")
 })
 
-router.post("/api/user/register", (req, res) => {
+router.post("/api/users/register", (req, res) => {
     const {email, password, fullName} = req.body;
     console.log(req.body)
     const {salt, hash} = genPassword(password)
@@ -374,7 +544,7 @@ router.post("/api/user/register", (req, res) => {
             console.log("User didn't register")
         } else {
             console.log(`User ${user} has been created`)
-            res.redirect('login')
+            res.redirect('/api/users/manage-users')
         }
     }).catch(err => {
         console.log(`Email: ${user.email}
@@ -384,24 +554,130 @@ router.post("/api/user/register", (req, res) => {
     })
 })
 // login user
-router.get('/api/user/login', (req, res) => {
-    res.render('login')
+router.get('/api/users/login', (req, res) => {
+    res.render('login', {message: req.session.message})
+    delete req.session.message
 })
 
-router.post('/api/user/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/'}));
+router.post('/api/users/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/'}));
 
 
-router.get('/api/user/logout', (req, res) => {
-    res.render("logout")
-})
 
-router.post('/api/user/logout', (req, res) => {
+router.get('/api/users/logout', (req, res) => {
     req.logOut((err) => {
         if(err) {
            console.log(err)
         }
         res.redirect('/api/user/login')
     })
+})
+
+router.get('/api/users/manage-users', (req, res) => {
+    User.find().then((users) => {
+        res.render('mangeUsers', {users: users})
+    }).catch(err => console.log(err))
+})
+
+router.get('/api/users/manage-users/:id', (req, res) => {
+    const oldPass = req.body.oldPass
+    const newPass = req.body.newPass
+    User.findById(id).then((user) => {
+        if (validPassword(oldPass)) {
+            const {salt, hash} = genPassword(newPass)
+            User.findByIdAndUpdate(id, {salt: salt, hash, hash}).then()
+        }
+    
+    })
+})
+
+router.get('/api/users/manage-users/edit/:id', (req, res) => {
+    User.findOne({_id: req.params.id}).then((content) => {
+
+        res.render('user-manager-edit', {user: content})
+
+    }).catch(err => console.log(err))
+})
+
+router.post('/api/users/manage-users/edit/:id', (req, res) => {
+    const email = req.body.email
+    const fullName = req.body.fullName
+    const id = req.params.id
+    const isWorker = req.body.isWorker == "on" ? true : false
+    const isAdmin = req.body.isAdmin == "on" ? true : false
+
+    const password = req.body.password
+    if (password != undefined || password == "") {
+        const {hash, salt} = genPassword(password)
+        
+        
+        User.findOneAndUpdate({_id: id}, {fullName: fullName, email: email, hash: hash, salt: salt, isAdmin: isAdmin, isWorker: isWorker}).then((content) => {
+                console.log("Successfully updated the user: " + content)
+                res.redirect('/api/users/manage-users')
+        }).catch(err => console.log(err))
+    } else {
+        User.findOneAndUpdate({_id: id}, {fullName: fullName, email: email, isAdmin: isAdmin, isWorker: isWorker}).then((content) => {
+            console.log("Successfully updated the user: " + content)
+            res.redirect('/api/users/manage-users')
+    }).catch(err => console.log(err))
+    }
+
+})
+
+router.get('/api/users/manage-users/delete/:id', (req, res) => {
+
+    const id = req.params.id
+
+    User.findById(id).then((user) => {
+
+        res.render('user-manager-delete.ejs', {user: user})
+
+    }).catch(err => console.log(err))
+
+})
+
+router.post('/api/users/manage-users/delete/:id', (req, res) => {
+
+    const id = req.params.id
+
+    User.findByIdAndDelete(id).then((user) => {
+
+        console.log(user)
+        res.redirect('/api/users/manage-users')
+
+    }).then(err => console.log(err))
+})
+
+router.get('/api/users/change-password', (req, res) => {
+    const id = req.user.id
+    User.findById(id).then((user) => {
+        res.render('user-changePassword', {message: req.session.message, user: user})
+        delete req.session.message
+    })
+})
+
+router.post('/api/users/change-password/:id', (req, res) => {
+    const oldPass = req.body.oldPassword
+    const newPass = req.body.newPassword
+    const id = req.params.id
+    User.findById(id).then((user) => {
+        const isValid = validPassword(oldPass, user.hash, user.salt)
+
+        if(isValid) {
+            const {hash, salt} = genPassword(newPass)
+            User.findByIdAndUpdate(id, {salt: salt, hash: hash}).then((user) => {
+                req.session.message = {message :"Password Changed Successfully", bgColor: "bg-green-400", textColor: "text-green-700"}
+                res.redirect('/api/users/change-password')
+            }).catch(err => console.log(err))
+        } else {
+
+            req.session.message = {message :"Old Password is Invalid", bgColor: "bg-red-300", textColor: "text-red-500"}
+            res.redirect('/api/users/change-password')
+
+        }
+    }).catch((err) => {
+        console.log(err)
+    })
+
 })
 
 router.get('/login-failure', (req, res) => {

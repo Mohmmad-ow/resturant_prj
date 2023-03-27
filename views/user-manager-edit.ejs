@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head">
+	<title>Profit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet">
+
+    
+
+</head>
+<body>
+    <div class="flex-container min-h-[100vh] justify-center items-center">
+        
+        <form class="w-[40%] bg-green-400 p-8 rounded-2xl text-white" action="/api/users/manage-users/edit/<%= user.id %>" method="post">
+            <div class="bg-green-400 p-4 text-white">
+                <h1 class="text-left">Full Name: <%= user.fullName %></h1>
+                <h1 class="text-left">Email: <%= user.email %></h1>
+                <h1 class="text-left mt-12">Is a worker: <%= user.isWorker %></h1>
+                <h1 class="text-left">Is an admin: <%= user.isAdmin %></h1>
+                
+                
+            </div>
+
+            <h1 class="text-center py-3">Edit User Info</h1>
+            <div class="text-center p-2">
+                <label for="full_name">First Name</label>
+                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= user.fullName %>" name="fullName">
+            </div>
+            <div class="text-center p-2">
+                <label for="email">Email</label>
+                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="email" id="email" value="<%= user.email %>" name="email">
+            </div>
+            <div class="text-center p-2">
+                <label for="password">Password</label>
+                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="password" id="password"  name="password">
+            </div>
+            <div class="text-center">
+                <h1>Is an admin</h1>
+                <input type="checkbox" name="isAdmin" checked="<%= user.isAdmin %>">
+            </div>
+            
+            <div class="text-center">
+                <h1>Is a worker</h1>
+                <input class="" type="checkbox" name="isWorker" checked="<%= user.isWorker %>">
+            </div>
+            <div class="w-full flex justify-center mt-6">
+                <button class="bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+<script src="/js/main.js" defer></script>
+	
+<script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+
+</body>
+</html>

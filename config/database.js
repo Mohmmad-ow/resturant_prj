@@ -33,7 +33,6 @@ const ExpenseSchema = mongoose.Schema({
     price: Number,
     date: {type: Date, default: new Date()},
     user: {type: UserSchema},
-    payed: {type: Boolean}
 })
 
 const Expense = mongoose.model('expense', ExpenseSchema)
@@ -53,8 +52,8 @@ const InvoiceSchema = mongoose.Schema({
     date: {type: Date, default: new Date()},
     user: {type: UserSchema},
     wholePrice: {type: Number},
-    voucher: {type: VoucherSchema},
-    
+    voucher: {type: Number},
+    tableNumber: Number,
     isDone: Boolean
     
 })
@@ -67,5 +66,13 @@ const CategorySchema = mongoose.Schema({
 
 const Category = mongoose.model('category', CategorySchema)
 
+const TableSchema = mongoose.Schema({
+    tableNumber: {type: Number, unique: true},
+    invoiceID: {type: mongoose.Schema.Types.ObjectId, ref: 'Invoice'},
+    isFree: Boolean
 
-module.exports = {User, Product, Invoice, Expense, Voucher, Category}
+})
+
+const Table = mongoose.model('table', TableSchema)
+
+module.exports = {User, Product, Invoice, Expense, Voucher, Category, Table}
