@@ -24,13 +24,13 @@ const path = require('path')
 router.get('/', isWorker,(req, res, next) => {
     Table.find().then((content) => {
         content = content.sort((a, b) => {return a.tableNumber - b.tableNumber})
-        console.log(content)
-        res.render("home", {tables: content, user: req.user, message: req.session.message})
+        const message = req.session.message
         delete req.session.message
+        res.render("home", {tables: content, user: req.user, message: message})
     }).catch(err => console.log(err))
 })
 
-router.get('/settings', (req, res) => {
+router.get('/settings', isWorker,(req, res) => {
     Voucher.find().then((voucher) => {
 
         Category.find().then((category) => {
@@ -49,7 +49,7 @@ router.get('/settings', (req, res) => {
 })
 
 // table CRUD
-router.post('/api/tables/create', (req, res) => {
+router.post('/api/tables/create', isWorker,(req, res) => {
     const number = req.body.tableNumber
 
     Table.create({tableNumber: number, isFree: true}).then((table) => {
@@ -58,7 +58,7 @@ router.post('/api/tables/create', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.post('/api/tables/delete/:id', (req, res) => {
+router.post('/api/tables/delete/:id', isWorker,(req, res) => {
     const id = req.params.id
 
     Table.findByIdAndDelete(id).then((content) => {
@@ -70,7 +70,7 @@ router.post('/api/tables/delete/:id', (req, res) => {
 })
 
 // Voucher CRUD
-router.post('/api/voucher/create', (req, res) => {
+router.post('/api/voucher/create', isWorker,(req, res) => {
     const {code, value} = req.body
 
     Voucher.create({code: code, value: value}).then((content) => {
@@ -81,7 +81,7 @@ router.post('/api/voucher/create', (req, res) => {
 })
 
 // Category CURD
-router.post('/api/category/create', (req, res) => {
+router.post('/api/category/create', isWorker,(req, res) => {
     console.log(req.body)
     const {category} = req.body
 
@@ -92,7 +92,7 @@ router.post('/api/category/create', (req, res) => {
 })
 
 // Products - CRUD 
-router.get('/api/products/create', (req, res) => {
+router.get('/api/products/create', isWorker,(req, res) => {
     Category.find().then((categories) => {
 
         res.render('product-create', {categories: categories})
@@ -100,7 +100,7 @@ router.get('/api/products/create', (req, res) => {
 })
 
 
-router.post('/api/products/create', (req, res) => {
+router.post('/api/products/create', isWorker,(req, res) => {
     if (Object.keys(req.files).length == 0) {
         res.status(400).send("No file uploaded")
 
@@ -124,7 +124,7 @@ router.post('/api/products/create', (req, res) => {
     })
 })
 
-router.get('/api/products/view', (req, res) => {
+router.get('/api/products/view', isWorker,(req, res) => {
     Product.find().then((content) => {
         res.render("product", {products: content, user: req.user})
     }).catch((err) => {
@@ -132,7 +132,7 @@ router.get('/api/products/view', (req, res) => {
     })
 })
 
-router.get("/api/products/edit/:id", (req, res) => {
+router.get("/api/products/edit/:id", isWorker,(req, res) => {
     const id = req.params.id
     Product.findById(id).then(content => {
         res.render("product-edit", {product: content})
@@ -172,12 +172,12 @@ router.post("/api/products/edit/:id", (req, res) => {
 
 })
 
-router.get("/api/products/delete/:id", (req, res) => {
+router.get("/api/products/delete/:id", isWorker,(req, res) => {
     const id = req.params.id;
     res.render("product-delete", {id: id})
 })
 
-router.post("/api/products/delete/:id", (req, res) => {
+router.post("/api/products/delete/:id",isWorker, (req, res) => {
     const id = req.params.id
     Product.findByIdAndDelete(id).then(content => {
         fs.unlinkSync(path.join(__dirname,'../' + "public", content.pic_url), (err) => {
@@ -194,7 +194,7 @@ router.post("/api/products/delete/:id", (req, res) => {
 // Invoice - CRUD
 
 
-router.get("/api/invoice/create/:tableNumber", (req, res) => {
+router.get("/api/invoice/create/:tableNumber", isWorker,(req, res) => {
     Product.find().then((content) => {
         Voucher.find().then((voucher) => {
 
@@ -208,7 +208,7 @@ router.get("/api/invoice/create/:tableNumber", (req, res) => {
 })
 
 // invoice is gonna be viewed by id at first but later by table number
-router.get("/api/invoice/view/:id", (req, res) => {
+router.get("/api/invoice/view/:id", isWorker,(req, res) => {
     const id = req.params.id;
     Invoice.findById(id).then((invoice) => {
         res.render("invoice", {invoice: invoice})
@@ -217,7 +217,7 @@ router.get("/api/invoice/view/:id", (req, res) => {
 
 
 // view all invoices - as analytics
-router.get("/api/invoice/analytics/", (req, res) => {
+router.get("/api/invoice/analytics/", isWorker,(req, res) => {
     Invoice.find().then(content => {
         
         content = content.reverse()
@@ -225,7 +225,7 @@ router.get("/api/invoice/analytics/", (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.post('/api/invoice/create/:tableNumber', (req, res) => {
+router.post('/api/invoice/create/:tableNumber', isWorker,(req, res) => {
     console.log(req.body)
     console.log(Object.keys(req.body))
     
@@ -272,7 +272,7 @@ router.post('/api/invoice/create/:tableNumber', (req, res) => {
     
 })
 
-router.get('/api/invoice/edit/:tableNumber', (req, res) => {
+router.get('/api/invoice/edit/:tableNumber', isWorker,(req, res) => {
 
     Table.findOne({tableNumber: req.params.tableNumber}).then((table) => {
         
@@ -292,7 +292,7 @@ router.get('/api/invoice/edit/:tableNumber', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.post("/api/invoice/edit/:tableNumber", (req, res) => {
+router.post("/api/invoice/edit/:tableNumber",isWorker, (req, res) => {
     console.log(req.body)
     console.log(Object.keys(req.body))
     
@@ -344,7 +344,7 @@ router.post("/api/invoice/edit/:tableNumber", (req, res) => {
 })
 
 // checkout to view and print
-router.get('/api/invoice/checkout/:id', (req, res) => {
+router.get('/api/invoice/checkout/:id',isWorker, (req, res) => {
     const id = req.params.id
     Invoice.findById(id).then((content) => {
         res.render('checkout', {order: content})
@@ -352,7 +352,7 @@ router.get('/api/invoice/checkout/:id', (req, res) => {
 })
 
 // only checkout and make the table free
-router.post('/api/invoice/checkout/:id', (req, res) => {
+router.post('/api/invoice/checkout/:id',isWorker, (req, res) => {
     Invoice.findOne({_id: req.params.id}).then((order) => {
 
         Table.findOneAndUpdate({tableNumber: order.tableNumber}, {isFree: true}).then((no) => {
@@ -363,7 +363,7 @@ router.post('/api/invoice/checkout/:id', (req, res) => {
 })
 
 // print the order
-router.post('/api/invoice/checkout/:id/print', (req, res) => {
+router.post('/api/invoice/checkout/:id/print',isWorker, (req, res) => {
     const id = req.params.id
         
         console.log(req.body)
@@ -381,7 +381,7 @@ router.post('/api/invoice/checkout/:id/print', (req, res) => {
 })
 
 // View profits 
-router.get('/profits', (req, res) => {
+router.get('/profits', isWorker,(req, res) => {
     console.log(req.body)
     Invoice.find().then((checkouts) => {
         Expense.find().then((expenses) => {
@@ -404,7 +404,7 @@ router.get('/profits', (req, res) => {
 })
 
 // View the profits by the day. month, year and choose between the dates
-router.post('/profits', (req, res) => {
+router.post('/profits', isWorker,(req, res) => {
     
     let selectedDate, momentJsStart, startDate, momentJsEnd, endDate
     if (req.body.date != undefined) {
@@ -469,14 +469,14 @@ router.post('/profits', (req, res) => {
 
 // expresses
 // viewing expenses
-router.get("/api/expenses/view", (req, res) => {
+router.get("/api/expenses/view",isWorker, (req, res) => {
     Expense.find().then((content) => {
 
-        res.render("expenses", {expenses: content})
+        res.render("expenses", {expenses: content, user: req.user})
     }).catch(err => {console.log(err)})
 })
 // creating expenses
-router.post("/api/expenses/create", (req, res) => {
+router.post("/api/expenses/create", isWorker,(req, res) => {
     const {name, price, amount} = req.body
     Expense.create({name: name, price: price, amount: amount, date: Date.now(), user: req.user}).then((content) => {
         if(content) {
@@ -488,22 +488,22 @@ router.post("/api/expenses/create", (req, res) => {
     })
 })
 
-router.get('/api/expenses/delete/:id', (req, res) => {
+router.get('/api/expenses/delete/:id',isWorker, (req, res) => {
     res.render('expenses-delete', {id: req.params.id, user: req.user})
 })
 
-router.post('/api/expenses/delete/:id', (req, res) => {
+router.post('/api/expenses/delete/:id', isWorker,(req, res) => {
     Expense.findOneAndDelete({_id: req.params.id}).then((expense) => {
         console.log(expense)
         res.redirect('/api/expenses/view')
     }).catch(err => console.log(err))
 })
 
-router.get('/api/expenses/edit/:id', (req, res) => {
+router.get('/api/expenses/edit/:id', isWorker,(req, res) => {
     res.render('expenses-edit', {id: req.params.id, user: req.user})
 })
 
-router.post('/api/expenses/edit/:id', (req, res) => {
+router.post('/api/expenses/edit/:id',isWorker, (req, res) => {
     const {item, quantity, price} = req.body
     Expense.findByIdAndUpdate({_id: req.params.id}, {name: item, amount: quantity, price: price, user: req.user, date: Date.now()}).then((expense) => {
         console.log(expense)
@@ -512,7 +512,7 @@ router.post('/api/expenses/edit/:id', (req, res) => {
 })
 
 
-router.post("/api/category/delete/:id", (req, res) => {
+router.post("/api/category/delete/:id",isWorker, (req, res) => {
     const id = req.params.id
     Category.findByIdAndDelete(id).then((content) => {
         console.log(content)
@@ -520,7 +520,7 @@ router.post("/api/category/delete/:id", (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.post("/api/voucher/delete/:id", (req, res) => {
+router.post("/api/voucher/delete/:id",isWorker, (req, res) => {
     const id = req.params.id
     Voucher.findByIdAndDelete(id).then((content) => {
         console.log(content)
@@ -530,11 +530,11 @@ router.post("/api/voucher/delete/:id", (req, res) => {
 
 
 // User - CRUD and methods
-router.get('/api/users/register', (req, res) => {
+router.get('/api/users/register',isAdmin, (req, res) => {
     res.render("register")
 })
 
-router.post("/api/users/register", (req, res) => {
+router.post("/api/users/register", isAdmin,(req, res) => {
     const {email, password, fullName} = req.body;
     console.log(req.body)
     const {salt, hash} = genPassword(password)
@@ -555,8 +555,9 @@ router.post("/api/users/register", (req, res) => {
 })
 // login user
 router.get('/api/users/login', (req, res) => {
-    res.render('login', {message: req.session.message})
+    const message = req.session.message
     delete req.session.message
+    res.render('login', {message: message})
 })
 
 router.post('/api/users/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/'}));
@@ -568,17 +569,18 @@ router.get('/api/users/logout', (req, res) => {
         if(err) {
            console.log(err)
         }
-        res.redirect('/api/user/login')
+        req.session.message = {message :"You Need to login to access this page", bgColor: "bg-red-300", textColor: "text-red-500"}
+        res.redirect('/api/users/login')
     })
 })
 
-router.get('/api/users/manage-users', (req, res) => {
+router.get('/api/users/manage-users',isAdmin, (req, res) => {
     User.find().then((users) => {
-        res.render('mangeUsers', {users: users})
+        res.render('mangeUsers', {users: users, user: req.user})
     }).catch(err => console.log(err))
 })
 
-router.get('/api/users/manage-users/:id', (req, res) => {
+router.get('/api/users/manage-users/:id',isAdmin, (req, res) => {
     const oldPass = req.body.oldPass
     const newPass = req.body.newPass
     User.findById(id).then((user) => {
@@ -590,7 +592,7 @@ router.get('/api/users/manage-users/:id', (req, res) => {
     })
 })
 
-router.get('/api/users/manage-users/edit/:id', (req, res) => {
+router.get('/api/users/manage-users/edit/:id',isAdmin, (req, res) => {
     User.findOne({_id: req.params.id}).then((content) => {
 
         res.render('user-manager-edit', {user: content})
@@ -598,7 +600,7 @@ router.get('/api/users/manage-users/edit/:id', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.post('/api/users/manage-users/edit/:id', (req, res) => {
+router.post('/api/users/manage-users/edit/:id',isAdmin ,(req, res) => {
     const email = req.body.email
     const fullName = req.body.fullName
     const id = req.params.id
@@ -623,7 +625,7 @@ router.post('/api/users/manage-users/edit/:id', (req, res) => {
 
 })
 
-router.get('/api/users/manage-users/delete/:id', (req, res) => {
+router.get('/api/users/manage-users/delete/:id', isAdmin,(req, res) => {
 
     const id = req.params.id
 
@@ -635,7 +637,7 @@ router.get('/api/users/manage-users/delete/:id', (req, res) => {
 
 })
 
-router.post('/api/users/manage-users/delete/:id', (req, res) => {
+router.post('/api/users/manage-users/delete/:id',isAdmin, (req, res) => {
 
     const id = req.params.id
 
@@ -647,40 +649,51 @@ router.post('/api/users/manage-users/delete/:id', (req, res) => {
     }).then(err => console.log(err))
 })
 
-router.get('/api/users/change-password', (req, res) => {
+router.get('/api/users/change-password/', isWorker,(req, res) => {
+    
     const id = req.user.id
+
     User.findById(id).then((user) => {
-        res.render('user-changePassword', {message: req.session.message, user: user})
+        const message = req.session.message
         delete req.session.message
+        res.render('user-changePassword', {message: message, user: user})
     })
 })
 
 router.post('/api/users/change-password/:id', (req, res) => {
+
     const oldPass = req.body.oldPassword
     const newPass = req.body.newPassword
     const id = req.params.id
-    User.findById(id).then((user) => {
-        const isValid = validPassword(oldPass, user.hash, user.salt)
+    if (id == req.user.id) {
 
-        if(isValid) {
-            const {hash, salt} = genPassword(newPass)
-            User.findByIdAndUpdate(id, {salt: salt, hash: hash}).then((user) => {
-                req.session.message = {message :"Password Changed Successfully", bgColor: "bg-green-400", textColor: "text-green-700"}
+        User.findById(id).then((user) => {
+            const isValid = validPassword(oldPass, user.hash, user.salt)
+    
+            if (isValid) {
+                const {hash, salt} = genPassword(newPass)
+                User.findByIdAndUpdate(id, {salt: salt, hash: hash}).then((user) => {
+                    req.session.message = {message :"Password Changed Successfully", bgColor: "bg-green-400", textColor: "text-green-700"}
+                    res.redirect('/api/users/change-password')
+                }).catch(err => console.log(err))
+            } else {
+    
+                req.session.message = {message :"Old Password is Invalid", bgColor: "bg-red-300", textColor: "text-red-500"}
                 res.redirect('/api/users/change-password')
-            }).catch(err => console.log(err))
+    
+            }
+            }).catch((err) => {
+                console.log(err)
+            })
         } else {
-
-            req.session.message = {message :"Old Password is Invalid", bgColor: "bg-red-300", textColor: "text-red-500"}
-            res.redirect('/api/users/change-password')
-
+            req.session.message = {message :"Your Credentials do not match the user you're trying to change", bgColor: "bg-red-300", textColor: "text-red-500"}
+            res.redirect('/')
         }
-    }).catch((err) => {
-        console.log(err)
-    })
 
 })
 
 router.get('/login-failure', (req, res) => {
-    res.send("You didn't login!")
+    req.session.message = {message :"Login unsuccessful, the E-mail or password are wrong please try again ", bgColor: "bg-red-300", textColor: "text-red-500"}
+    res.redirect('/api/users/login')
 })
 module.exports = {router}

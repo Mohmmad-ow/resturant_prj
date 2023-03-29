@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 var path = require('path');
 require("dotenv").config();
-
+const {isAdmin, isWorker} = require('./router/Middleware')
 // upload images to server
 const files = require('express-fileupload')
 
@@ -77,7 +77,6 @@ app.use(session({
 // initializing the express session
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 app.use('/', router)
 

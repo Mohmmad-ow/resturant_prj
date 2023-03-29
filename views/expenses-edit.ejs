@@ -95,12 +95,22 @@
 			</div>
 			<!-- This is the End -->
 			<div class="flex justify-center items-center h-[100vh] w-full basis-4/5">
-				<form class="bg-green-400 rounded-2xl w-[50%] p-12 flex flex-col items-center justify-center" action="/api/expenses/edit/<%= id %>" method="post" class="flex">
+				<form class="bg-green-400 rounded-2xl w-[70%] p-12 flex flex-col items-center justify-center" action="/api/expenses/edit/<%= id %>" method="post" class="flex">
                         
-                        <div class="flex flex-row">
-                            
-                            <a href="/api/expenses/view" class="p-3 rounded-2xl bg-white text-black hover:bg-black hover:text-white">Cancel</a>
-                        </div>
+                       
+                            <div class="flex flex-row py-4 justify-between w-[40%] items-center ">
+								<label for="item">Item</label>
+								<input class="rounded-2xl " type="text" name="item" id="item">
+							</div>
+                            <div class="flex flex-row py-4 justify-between w-[40%] items-center ">
+								<label for="quantity">quantity</label>
+								<input  class="rounded-2xl " type="text" name="quantity" id="quantity">
+							</div>
+                            <div class="flex flex-row py-4 justify-between w-[40%] items-center ">
+								<label for="price">Price</label>
+								<input class="rounded-2xl " type="text" name="price" id="price">
+							</div>
+                            <button class="p-3 rounded-2xl bg-black text-red-50 hover:bg-white hover:text-black">Cancel</button>
 
                 </form>
             </div>

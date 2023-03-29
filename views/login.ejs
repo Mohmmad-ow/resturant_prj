@@ -25,15 +25,16 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="/css/util.css">
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" href="/output.css">
 <!--===============================================================================================-->
 </head>
 <body>
 	
 	<div class="limiter">
-		<% if (msg) { %>
-			<h1><%= msg %></h1>
-		<% } %>
 		<div class="container-login100">
+			<% if (message) { %>
+				<h1 class="text-center rounded-2xl w-[80%] mx-auto <%= message.bgColor %> <%= message.textColor %> p-4"><%= message.message %></h1>
+			<% } %>
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" action="/api/users/login" method="post">
 					<span class="login100-form-title p-b-26">

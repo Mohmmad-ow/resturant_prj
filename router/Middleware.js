@@ -53,7 +53,7 @@ function isAdmin(req, res, next) {
     if (req.isAuthenticated() && req.user.isAdmin) {
         next()
     } else {
-        req.session.message = {msg: "You aren't allowed to access this page", bgColor: 'bg-red-300', textColor: "text-red-700"}
+        req.session.message = {message: "You aren't allowed to access this page", bgColor: 'bg-red-300', textColor: "text-red-700"}
         res.redirect('/')
     }
 }
@@ -62,7 +62,7 @@ function isWorker(req, res, next) {
     if (req.isAuthenticated()) {
         next()
     } else {
-        req.session.message = {msg: "You can't access the page without being logged in", bgColor: 'bg-red-300', textColor: "text-red-700"}
+        req.session.message = {message: "You can't access the page without being logged in", bgColor: 'bg-red-300', textColor: "text-red-700"}
         res.render('login')
     }
 }

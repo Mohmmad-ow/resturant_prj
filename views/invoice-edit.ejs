@@ -34,7 +34,18 @@
                             <div class="basis-2/3 flex flex-row justify-between h-full">
                                 <div>
                                     <h1><%= order.orderFood[i].product.name %></h1>
-                                    <input class="w-16 h-6" value="<%= order.orderFood[i].amount %>" type="number" name="<%= order.orderFood[i].product.id %>" min="1">
+                                    <!-- <input class="w-16 h-6" value="<%= order.orderFood[i].amount %>" type="number" name="<%= order.orderFood[i].product.id %>" min="1"> -->
+                                    <h1 class="hidden"><%= order.orderFood[i].product.price %></h1>
+                                        <div class="flex flex-row justify-center">
+                                            <div class="input-group-prepend">
+                                                <button onclick="decrement(event)" type="button">-</button>
+                                            </div>
+                                            <input name="<%= order.orderFood[i].product.id %>" value="<%= order.orderFood[i].amount %>" class="w-12 h-6" type="number" name="count" min="1" style="appearance: textfield;">
+                                            <div class="input-group-append">
+                                                <button onclick="increment(event)" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <button onclick='removeEle("order_<%= order.orderFood[i].product.id %>")' class="bg-black-900">X</button>

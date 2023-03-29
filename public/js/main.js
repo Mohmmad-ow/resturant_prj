@@ -1,3 +1,5 @@
+const e = require("express")
+
 // const moment = require("moment/moment")
 function viewVoucher() {
     event.preventDefault()
@@ -68,9 +70,9 @@ function addEle(id) {
     
     for (let i = 0; i < parent.length; i++) {
         if (parent[i].id == "order_"+id) {
-             let num = Number(parent[i].children[1].children[0].children[1].value)
+             let num = Number(parent[i].children[1].getElementsByTagName('input')[0].value)
              console.log(num)
-             parent[i].children[1].children[0].children[1].value = num + 1
+             parent[i].children[1].getElementsByTagName('input')[0].value = num + 1
              findSum(id)
              return
         }} 
@@ -104,19 +106,63 @@ function addEle(id) {
     let ParentDiv2 = document.createElement("div")
     let ChildDiv2 = document.createElement("h1")
     let count = document.createElement('input')
-    count.classList.add('w-16')
-    count.classList.add('h-6')
-    count.type = 'number'
-    count.name = id
-    count.onkeydown = () => { return false }
-    count.min = '1'
-    count.value = '1'
-   count.onpointerup = () => {onUpKey(id)}
-   count.onpointerdown = () => {onDownKey(id)}
+    count.classList.add('w-12', 'h-6')
+count.type = 'number'
+count.name = 'count'
+count.min = '1'
+count.value = '1'
+count.style.appearance = 'textfield'
+
+let decrementButton = document.createElement('button')
+decrementButton.innerHTML = "-"
+decrementButton.setAttribute("type", "button")
+decrementButton.onclick = function() {
+    var value = parseInt(count.value);
+    value = isNaN(value) ? 1 : value;
+    if (value > 1) { // Check if value is already at 1 before decreasing
+        let whole_value = document.getElementById("whole_price").value
+            whole_value = whole_value.slice(0, -1)
+            document.getElementById('whole_price').value = (Number(whole_value) - Number(hiddenPrice.innerHTML)) + "$" 
+            value--;
+        }
+        count.value = value;
+}
+
+let incrementButton = document.createElement('button')
+incrementButton.innerHTML = "+"
+incrementButton.setAttribute("type", "button")
+incrementButton.onclick = function() {
+    let whole_value = document.getElementById("whole_price").value
+        whole_value = whole_value.slice(0, -1)
+        document.getElementById('whole_price').value = (Number(whole_value) + Number(hiddenPrice.innerHTML)) + "$" 
+    var value = parseInt(count.value);
+    value = isNaN(value) ? 1 : value;
+    value++;
+    count.value = value;
+}
+
+let group = document.createElement('div')
+group.classList.add('flex', 'flex-row', 'justify-center')
+
+let leftGroup = document.createElement('div')
+leftGroup.classList.add('input-group-prepend')
+leftGroup.appendChild(decrementButton)
+
+let rightGroup = document.createElement('div')
+rightGroup.classList.add('input-group-append')
+rightGroup.appendChild(incrementButton)
+
+group.appendChild(leftGroup)
+group.appendChild(count)
+group.appendChild(rightGroup)
+
+
+
+   
     
     ChildDiv2.innerHTML = product[1].children[0].innerHTML
     ParentDiv2.appendChild(ChildDiv2)
-    ParentDiv2.appendChild(count)
+    ParentDiv2.appendChild(group)
     
     div2.appendChild(ParentDiv2)
 
@@ -142,6 +188,30 @@ function addEle(id) {
     document.getElementById("addStuffTo").appendChild(returnEle)
     findSum(id)
 
+}
+
+
+function increment(e) {
+    let input = e.target.parentElement.parentElement.children[1]
+    
+    input.value = Number(input.value) + 1
+    let price = Number(e.target.parentElement.parentElement.parentElement.getElementsByTagName('h1')[1].innerHTML)
+    let whole_value = document.getElementById("whole_price").value
+        whole_value = whole_value.slice(0, -1)
+        document.getElementById('whole_price').value = (Number(whole_value) + price) + "$"
+    
+    
+}
+function decrement(e) {
+    let input = e.target.parentElement.parentElement.children[1]
+    if (input.value != '1') {
+        input.value = Number(input.value) - 1
+        let price = Number(e.target.parentElement.parentElement.parentElement.getElementsByTagName('h1')[1].innerHTML)   
+        let whole_value = document.getElementById("whole_price").value
+        whole_value = whole_value.slice(0, -1)
+        document.getElementById('whole_price').value = (Number(whole_value) - price) + "$"      
+
+    }
 }
 
 function queryTime() {
