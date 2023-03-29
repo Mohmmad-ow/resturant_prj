@@ -10,49 +10,122 @@
 
 </head>
 <body>
-    <div class="flex-container min-h-[100vh] justify-center items-center">
-        
-        <form class="w-[40%] bg-green-400 p-8 rounded-2xl text-white" action="/api/users/manage-users/edit/<%= user.id %>" method="post">
-            <div class="bg-green-400 p-4 text-white">
-                <h1 class="text-left">Full Name: <%= user.fullName %></h1>
-                <h1 class="text-left">Email: <%= user.email %></h1>
-                <h1 class="text-left mt-12">Is a worker: <%= user.isWorker %></h1>
-                <h1 class="text-left">Is an admin: <%= user.isAdmin %></h1>
-                
-                
-            </div>
-
-            <h1 class="text-center py-3">Edit User Info</h1>
-            <div class="text-center p-2">
-                <label for="full_name">First Name</label>
-                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= user.fullName %>" name="fullName">
-            </div>
-            <div class="text-center p-2">
-                <label for="email">Email</label>
-                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="email" id="email" value="<%= user.email %>" name="email">
-            </div>
-            <div class="text-center p-2">
-                <label for="password">Password</label>
-                <input autocomplete="off" class="text-black rounded-2xl p-2 focus:" type="password" id="password"  name="password">
-            </div>
-            <div class="text-center">
-                <h1>Is an admin</h1>
-                <input type="checkbox" name="isAdmin" checked="<%= user.isAdmin %>">
-            </div>
-            
-            <div class="text-center">
-                <h1>Is a worker</h1>
-                <input class="" type="checkbox" name="isWorker" checked="<%= user.isWorker %>">
-            </div>
-            <div class="w-full flex justify-center mt-6">
-                <button class="bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
-            </div>
-        </form>
-    </div>
+    
 <script src="/js/main.js" defer></script>
 	
 <script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
 <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+
+</body>
+</html>
+
+
+ <!DOCTYPE html>
+<html>
+<head">
+	<title>Profit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+
+		<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    
+</head>
+<style type="text/css">
+	.bg1{
+		background: #1e202c;
+	}
+	.bg2{
+		background: #0BCA8D;
+	}
+	.bg3{
+		background: #292b37;
+	}
+	.dot-pending{
+		color: #f8ca30;
+	}
+	.dot-danger{
+		color: #f8728a;
+	}
+	.dot-success{
+		color: #0bcb90;
+	}
+	*{
+		font-family: 'Arvo', serif;
+	}
+</style>
+<body>
+    <div class="flex flex-row-reverse">
+        
+    <%- include('partials/sidebar') %>
+    <!-- THis  -->
+    <div class="flex-container w-full flex-col justify-center items-center text-base basis-4/5">
+        <div class="p-3">
+            <p class="float-left text-black font-weight-bold mb-0" >Edit User</p>
+            <button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="flex-container w-full justify-center items-center">
+        
+            <form class="w-[40%] bg-green-400 p-4 rounded-2xl text-white" action="/api/users/manage-users/edit/<%= user.id %>" method="post">
+                <div class="bg-green-400 p-4 text-white">
+                    <h1 class="text-left text-base">Full Name: <%= user.fullName %></h1>
+                    <h1 class="text-left text-base">Email: <%= user.email %></h1>
+                    <h1 class="text-left text-base mt-12">Is a worker: <%= user.isWorker %></h1>
+                    <h1 class="text-left text-base">Is an admin: <%= user.isAdmin %></h1>
+                    
+                    
+                </div>
+    
+                <h1 class="text-center text-lg py-2">Edit User Info</h1>
+                <div class="text-center p-1">
+                    <label class="text-base" for="full_name">First Name</label>
+                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= user.fullName %>" name="fullName">
+                </div>
+                <div class="text-center p-1">
+                    <label class="text-base" for="email">Email</label>
+                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="email" id="email" value="<%= user.email %>" name="email">
+                </div>
+                <div class="text-center p-1">
+                    <label class="text-base" for="password">Password</label>
+                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="password" id="password"  name="password">
+                </div>
+                <div class="text-center flex flex-row-reverse justify-center items-center">
+                    <h1 class="text-lg py-1 px-2">Is an admin</h1>
+                    <input class="text-base" type="checkbox" name="isAdmin" checked="<%= user.isAdmin %>">
+                </div>
+                
+                <div class="text-center flex flex-row-reverse justify-center items-center">
+                    <h1 class="text-lg py-1 px-2">Is a worker   </h1>
+                    <input class="text-base" type="checkbox" name="isWorker" checked="<%= user.isWorker %>">
+                </div>
+                <div class="w-full flex justify-center mt-2">
+                    <button class="bg-slate-800 text-base rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+<script src="/js/main.js" defer></script>
+<script>
+    
+    function previous(){
+        
+        window.history.back()
+    
+    }
+</script>
+<script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+<script src="/js/Checkout.js" defer></script>
+	<script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 </html>

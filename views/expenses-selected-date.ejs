@@ -43,19 +43,63 @@
 			<%- include('partials/sidebar') %>
 			<!-- This is the End -->
 			<div class="items-center justify-center flex flex-col h-fit w-full basis-4/5">
+              
                 <div class="p-3 w-full">
 					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Expenses</p>
 					<button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
 					<div style="clear: both;"></div>
 				</div>
-                    <div class="flex flex-row justify-center items-center py-4">
-                        <div>
-                            <label style="font-size: 18px;" for="date-input">Choose a date:</label>
-                            <input type="date" id="date-input" name="date-input">
-                        </div>
-                        <button class="p-2 rounded-sm bg-green-400 hover:bg-green-600 mr-4">Choose Date</button>
+                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-green-400 mt-12 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown button <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                <!-- Dropdown menu -->
+                <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                      <li>
+                        <button onclick="viewHidden('chooseDate')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Select Date</button>
+                      </li>
+                      <li>
+                        <button onclick="viewHidden('selectMonth')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Select Month</button>
+                      </li>
+                      <li>
+                        <button onclick="viewHidden('selectYear')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Select Year</button>
+                      </li>
+                      <li>
+                        <button onclick="viewHidden('chooseBetween')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Select Between</button>
+                      </li>
+                    </ul>
+                </div>
+               
+                <form id="chooseDate" class="hidden" action="/api/expenses/get-selected-date" method="post">
+                    <label style="font-size: 18px;" for="date-input">Choose a date:</label>
+                    <input class="text-black" type="date" id="date-input" name="date">
+                    <button class="text-lg bg-green-400 border border-white hover:bg-green-700 w-36 h-12 rounded-3xl" value="Select Date" onclick="">Select Date</button>
+    
+                    
+                </form>
+                <form id="selectMonth" class="hidden" action="/api/expenses/get-selected-date" method="post">
+                    <label style="font-size: 18px;" for="date-input">Choose a Month of this Year:</label>
+                    <input class="text-black" type="number" min="0" max="12" id="date-input" name="month">
+                    <button class=" text-lg bg-green-400 border border-white hover:bg-green-700 w-36 h-12 rounded-3xl" value="Select Date" onclick="">Select Date</button>
+    
+                    
+                </form>
+                <form id="selectYear" class="hidden" action="/api/expenses/get-selected-date" method="post">
+                    <label style="font-size: 18px;" for="date-input">Choose a Year:</label>
+                    <input class="text-black" type="number" min="2023" id="date-input" name="year">
+                    <button class="text-lg bg-green-400 border border-white hover:bg-green-700 w-36 h-12 rounded-3xl" value="Select Date" >Select Date</button>        
+                </form>
+                <form id="chooseBetween" class="hidden" action="/api/expenses/get-selected-date" method="post">
+                    <label class="text-black" style="font-size: 18px;" for="date-input">Choose The Start and the end Date</label>
+                    <div>
+                        <label  class="text-lg text-black" for="startdate">Start Date</label>
+                        <input class="text-black" type="date" id="startdate" name="chooseBetween">
                     </div>
-                               <table class="users-info w-[50%]">
+                    <div>
+                        <label class="text-lg text-black" for="enddate">End Date</label>
+                        <input class="text-black" type="date" id="enddate" name="chooseBetween">
+                    </div>
+                    <button class="text-lg bg-green-400 border border-white hover:bg-green-700 w-36 h-12 rounded-3xl" value="Select Date" onclick="">Select Date</button> 
+                </form>
+                               <table class="users-info w-[50%] mt-12">
                                         <tr>
                                             <th>Sequence</th>
                                             <th>Item</th>
@@ -104,5 +148,8 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/dist/flowbite.min.js"></script>
+<script src="/js/main.js" defer></script>
+
 </body>
 </html>

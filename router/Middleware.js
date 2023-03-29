@@ -1,6 +1,10 @@
 const PDFDocument = require('pdfkit')
 
 function makePdf(order, res, received, returned) {
+    let voucher = order.voucher
+    if (order.voucher == null) {
+        voucher = 0
+    }
     let doc = new PDFDocument
 
     res.type('pdf');
@@ -8,6 +12,7 @@ function makePdf(order, res, received, returned) {
     
     doc.fontSize(12).text(order.date)
     doc.text("Waiter: "+order.user.fullName)
+    doc.text("Table #" +order.tableNumber)
     doc.moveDown()
    .font('Helvetica-BoldOblique')
    .text('Name')
@@ -31,7 +36,7 @@ doc
    .moveDown()
    .text('Voucher', 72)
    .moveUp()
-   .text(order.voucher + "$", 200)
+   .text(voucher + "$", 200)
    .moveDown()
    .fontSize(14)
    .text("Total", 72)
@@ -63,7 +68,7 @@ function isWorker(req, res, next) {
         next()
     } else {
         req.session.message = {message: "You can't access the page without being logged in", bgColor: 'bg-red-300', textColor: "text-red-700"}
-        res.render('login')
+        res.redirect('/api/users/login')
     }
 }
 

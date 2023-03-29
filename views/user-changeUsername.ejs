@@ -42,38 +42,33 @@
     <%- include('partials/sidebar') %>
     <!-- THis  -->
     <div class="flex-container w-full flex-col justify-center items-center text-base basis-4/5">
-        <div class="p-3">
+
+        <div class="px-3">
+            <p class="float-left text-black font-weight-bold mb-0">Change Username</p>
             <button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
-            <div style="clear: both;"></div>
         </div>
-        <form class="w-[80%] bg-blue-400 p-4 rounded-2xl text-white" action="/api/users/change-password/<%= user.id %>" method="post">
-            <% if (message) { %>
-            <div class="p-2 w-[60%] mx-auto rounded-xl <%= message.bgColor %> <%= message.textColor %> text-center mt-12">
-                <h1 class="text-lg"><%= message.message %></h1>
-            </div>
-            <% } %>
-            <div class=" p-4 text-white flex flex-col justify-start">
-                <h1 class="text-left text-lg">Full Name: <%= user.fullName %></h1>
-                <h1 class="text-left text-lg">Email: <%= user.email %></h1>
-                <h1 class="text-left mt-8 text-lg">Is a worker: <%= user.isWorker %></h1>
-                <h1 class="text-left text-lg">Is an admin: <%= user.isAdmin %></h1>
-                
-            </div>
-            <a class="text-white p-2 w-fit rounded-2xl bg-green-400 hover:bg-green-700 hover:text-black" href="/api/users/change-username/<%= user.id %>">Change Username</a>
+        <div class="flex-container min-h-[100vh] justify-center items-center">
             
-            <div class="text-center p-2 mt-4">
-                <h1 class="text-center p-2">Edit Password</h1>
-                <label for="full_name">Old Password</label>
-                <input autocomplete="off" class="text-black rounded-2xl p-2 " type="password" id="full_name" name="oldPassword">
-            </div>
-            <div class="text-center p-2">
-                <label for="newPassword">New Password</label>
-                <input class="text-black rounded-2xl p-2 " type="password" id="newPassword" name="newPassword">
-            </div>
-            <div class="w-full flex justify-center mt-6">
-                <button class="bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
-            </div>
-        </form>
+            <form class="w-[40%] bg-green-400 p-8 rounded-2xl text-white" action="/api/users/change-username/<%= user.id %>" method="post">
+                <div class="bg-green-400 p-4 text-white">
+                    <h1 class="text-left text-base">Full Name: <%= user.fullName %></h1>
+                    <h1 class="text-left text-base">Email: <%= user.email %></h1>
+                    <h1 class="text-left text-base mt-12">Is a worker: <%= user.isWorker %></h1>
+                    <h1 class="text-left text-base">Is an admin: <%= user.isAdmin %></h1>
+                    
+                    
+                </div>
+                <h1 class="text-center text-2xl py-3">Edit Username</h1>
+                <div class="text-center p-2">
+                    <label for="full_name" class="text-lg">Full Name</label>
+                    <input autocomplete="off" class="text-black w-[65%] text-center rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= user.fullName %>" name="fullName">
+                </div>
+                
+                <div class="w-full flex justify-center mt-6">
+                    <button class="text-lg bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
     </div>
 <script src="/js/main.js" defer></script>

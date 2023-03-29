@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+
+		<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/output.css">
+</head>
+<style type="text/css">
+    
+	.bg1{
+		background: #1e202c;
+	}
+	.bg2{
+		background: #0BCA8D;
+	}
+	.bg3{
+		background: #292b37;
+	}
+	.dot-pending{
+		color: #f8ca30;
+	}
+	.dot-danger{
+		color: #f8728a;
+	}
+	.dot-success{
+		color: #0bcb90;
+	}
+	*{
+		font-family: 'Arvo', serif;
+	}
+</style>
+<body>
+<div class="flex flex-row-reverse">
+	<%- include('partials/sidebar-reg') %>
+    
+	<div class="flex flex-col justify-center items-center bg-white basis-4/5">
+        <% if (message) { %>
+            <div class="p-2 w-[60%] mx-auto rounded-xl <%= message.bgColor %> <%= message.textColor %> text-center my-4">
+                <h1 class="text-lg"><%= message.message %></h1>
+        </div>
+        <% } %>
+            <div class="px-8 py-6 w-[55%] text-left bg-white shadow-lg mt-12">
+                <h3 class="text-2xl font-bold text-center">Join us</h3>
+                <form action="/api/users/create-superuser" method="post">
+                    <div class="mt-4 flex flex-col justify-center items-center">
+                        <div class="w-fit">
+                             <label  for="Name">Name<label>
+                                    <input type="text" placeholder="Name" name="fullName"
+                                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                        <div class="mt-4 w-fit">
+                            <label  for="email">Email<label>
+                                    <input type="text" placeholder="Email" name="email" class="w-72 px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                        <div class="mt-4 w-fit">
+                            <label >Password<label>
+                                    <input type="password" placeholder="Password" name="password" class="w-72 px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                        <div class="mt-4 w-fit">
+                            <label >Secret Key<label>
+                                    <input type="password" placeholder="Secret Key" name="secretKey" class="w-72 px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                       
+                        <div class="flex">
+                            <button class="w-72 px-6 py-2 mt-4 text-white bg-green-400 rounded-lg hover:bg-green-700">Create Account</button>
+                        </div>
+                        <div class="mt-6 text-grey-dark">
+                            Already have an account?
+                            <a class="text-blue-600 hover:underline" href="/api/users/login">
+                                Log in
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+       
+	</div>
+</div>
+<script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
+<script>
+    function goBack() {
+        window.history.back()
+    }
+</script>
+</body>
+</html>

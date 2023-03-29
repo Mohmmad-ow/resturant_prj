@@ -53,7 +53,7 @@ const {User, Product} = require("./config/database")
 
 
 
-const DB_STRING = process.env.DB_STRING_DEV;
+const DB_STRING = process.env.DB_STRING_PRUD;
 
 mongoose.connect(DB_STRING).then(() => {console.log('db online')}).catch((err) => {
 
@@ -80,6 +80,6 @@ app.use(passport.session())
 
 app.use('/', router)
 
-app.listen(3000 || process.env.PORT, () => {
+app.listen(process.env.PORT || 3000 , () => {
     console.log(`server is running on port 3000`)
 })

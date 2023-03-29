@@ -14,6 +14,8 @@ const {genPassword, validPassword} = require('../Utils/passwordVaild')
 // makepdf to create a printed form of the checkout, isAdmin and isWorker is for user permissions
 const {makePdf, isAdmin, isWorker} = require('./Middleware')
 // file system to delete images when they are edited out
+const moment = require('moment')
+
 const fs = require("fs")
 
 // we need path to go one level up when uploading pics
@@ -25,8 +27,9 @@ router.get('/', isWorker,(req, res, next) => {
     Table.find().then((content) => {
         content = content.sort((a, b) => {return a.tableNumber - b.tableNumber})
         const message = req.session.message
+       
         delete req.session.message
-        res.render("home", {tables: content, user: req.user, message: message})
+        res.render("home", {tables: content, user: req.user , message: message})
     }).catch(err => console.log(err))
 })
 
@@ -37,8 +40,7 @@ router.get('/settings', isWorker,(req, res) => {
 
             Table.find().then((table) => {
                 table = table.sort((a, b) => {return a.tableNumber - b.tableNumber})
-                console.log(table)
-                res.render('settings', {vouchers: voucher, categories: category, tables: table})
+                res.render('settings', {vouchers: voucher, categories: category, tables: table, user: req.user})
 
             }).catch(err => console.log(err))
 
@@ -95,7 +97,7 @@ router.post('/api/category/create', isWorker,(req, res) => {
 router.get('/api/products/create', isWorker,(req, res) => {
     Category.find().then((categories) => {
 
-        res.render('product-create', {categories: categories})
+        res.render('product-create', {categories: categories, user: req.user})
     }).catch(err => console.log(err))
 })
 
@@ -135,7 +137,7 @@ router.get('/api/products/view', isWorker,(req, res) => {
 router.get("/api/products/edit/:id", isWorker,(req, res) => {
     const id = req.params.id
     Product.findById(id).then(content => {
-        res.render("product-edit", {product: content})
+        res.render("product-edit", {product: content, user: req.user})
     }).catch(err => console.log(err))
 })
 router.post("/api/products/edit/:id", (req, res) => {
@@ -198,7 +200,7 @@ router.get("/api/invoice/create/:tableNumber", isWorker,(req, res) => {
     Product.find().then((content) => {
         Voucher.find().then((voucher) => {
 
-            res.render("invoice-create", {products: content, vouchers: voucher, tableNumber: req.params.tableNumber})
+            res.render("invoice-create", {products: content, vouchers: voucher, tableNumber: req.params.tableNumber, user: req.user})
 
         }).catch(err => {console.log(err)})
 
@@ -221,7 +223,7 @@ router.get("/api/invoice/analytics/", isWorker,(req, res) => {
     Invoice.find().then(content => {
         
         content = content.reverse()
-        res.render('analytics', {checkouts: content})
+        res.render('analytics', {checkouts: content, user: req.user})
     }).catch(err => console.log(err))
 })
 
@@ -259,8 +261,11 @@ router.post('/api/invoice/create/:tableNumber', isWorker,(req, res) => {
                         res.redirect('/api/invoice/checkout/'+content.id)
                     })
                 } else {
-                    res.redirect('/')
-                    console.log("Table still in progress")
+                    console.log("table empty")
+                    Table.findOneAndUpdate({tableNumber: req.params.tableNumber}, {invoiceID: content.id, isFree: false}).then((table) => {
+                        console.log(table.invoiceID)
+                        res.redirect('/')
+                    })
                 }
             })
 
@@ -281,7 +286,7 @@ router.get('/api/invoice/edit/:tableNumber', isWorker,(req, res) => {
             Voucher.find().then((vouchers) => {
                 Product.find().then((products) => {
 
-                    res.render('invoice-edit', {order: content, vouchers: vouchers, tableNumber: req.params.tableNumber, products: products})
+                    res.render('invoice-edit', {order: content, vouchers: vouchers, tableNumber: req.params.tableNumber, products: products, user: req.user})
                 }).catch(err => console.log(err))
 
             }).catch(err => console.log(err))
@@ -329,8 +334,11 @@ router.post("/api/invoice/edit/:tableNumber",isWorker, (req, res) => {
                             res.redirect('/api/invoice/checkout/'+content.id)
                         })
                     } else {
+                        console.log("table empty")
+                        Table.findOneAndUpdate({tableNumber: req.params.tableNumber}, {invoiceID: content.id, isFree: false}).then((table) => {
+                        console.log(table.invoiceID)
                         res.redirect('/')
-                        console.log("Table still in progress")
+                        })
                     }
                 }).catch(err => console.log(err))
             
@@ -347,7 +355,7 @@ router.post("/api/invoice/edit/:tableNumber",isWorker, (req, res) => {
 router.get('/api/invoice/checkout/:id',isWorker, (req, res) => {
     const id = req.params.id
     Invoice.findById(id).then((content) => {
-        res.render('checkout', {order: content})
+        res.render('checkout', {order: content, user: req.user})
     })
 })
 
@@ -382,7 +390,6 @@ router.post('/api/invoice/checkout/:id/print',isWorker, (req, res) => {
 
 // View profits 
 router.get('/profits', isWorker,(req, res) => {
-    console.log(req.body)
     Invoice.find().then((checkouts) => {
         Expense.find().then((expenses) => {
             const totalSold = checkouts.map((checkout) => {
@@ -396,7 +403,7 @@ router.get('/profits', isWorker,(req, res) => {
                 return expense.price
             }).reduce((a, b) => a+b, 0)
 
-            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalSold-totalExpenses})
+            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalSold-totalExpenses, user: req.user})
 
         }).catch(err => console.log(err))
 
@@ -457,8 +464,7 @@ router.post('/profits', isWorker,(req, res) => {
             
                 return expense.price
             }).reduce((a, b) => a+b, 0)
-            console.log(totalExpenses, totalSold, totalExpenses - totalSold)
-            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalExpenses-totalSold})
+            res.render('profits-selected-date', {totalExpenses: totalExpenses, totalSold: totalSold, totalProfit: totalSold-totalExpenses, user: req.user})
 
         }).catch(err => console.log(err))
 
@@ -472,8 +478,55 @@ router.post('/profits', isWorker,(req, res) => {
 router.get("/api/expenses/view",isWorker, (req, res) => {
     Expense.find().then((content) => {
 
-        res.render("expenses", {expenses: content, user: req.user})
+        res.render("expenses-selected-date", {expenses: content.reverse(), user: req.user})
     }).catch(err => {console.log(err)})
+})
+
+router.post('/api/expenses/get-selected-date', isWorker,(req, res) => {
+    let selectedDate, momentJsStart, startDate, momentJsEnd, endDate
+    if (req.body.date != undefined) {
+        selectedDate = req.body.date
+        momentJsStart = moment(selectedDate, "YYYY-MM-DD")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'day')
+        endDate = momentJsEnd.toDate()
+        
+        
+    } else if (req.body.month != undefined) {
+        selectedDate = req.body.month
+        momentJsStart = moment(new Date().getFullYear() +'-'+ selectedDate, "YYYY-MM")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'months')
+        endDate = momentJsEnd.toDate()
+        
+        
+    } else if (req.body.year != undefined) {
+        selectedDate = req.body.year
+        momentJsStart = moment(selectedDate, "YYYY")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = momentJsStart.add(1, 'year')
+        endDate = momentJsEnd.toDate()
+        
+    } else {
+        selectedDate = req.body.chooseBetween
+        momentJsStart = moment(selectedDate[0], "YYYY-MM-DD")
+        startDate = momentJsStart.toDate()
+        momentJsEnd = moment(selectedDate[1])
+        endDate = momentJsEnd.toDate()
+        
+    }
+
+        Expense.find({ date:  {
+            '$gt':  startDate,
+            '$lt':  endDate
+        } }).then((content) => {
+            const expenses = content.reverse()
+
+            res.render('expenses-selected-date', {expenses: expenses,  user: req.user})
+
+        }).catch(err => console.log(err))
+
+
 })
 // creating expenses
 router.post("/api/expenses/create", isWorker,(req, res) => {
@@ -660,7 +713,7 @@ router.get('/api/users/change-password/', isWorker,(req, res) => {
     })
 })
 
-router.post('/api/users/change-password/:id', (req, res) => {
+router.post('/api/users/change-password/:id',isWorker,  (req, res) => {
 
     const oldPass = req.body.oldPassword
     const newPass = req.body.newPassword
@@ -690,6 +743,43 @@ router.post('/api/users/change-password/:id', (req, res) => {
             res.redirect('/')
         }
 
+})
+
+router.get('/api/users/change-username/:id',isWorker,  (req, res) => {
+    if (req.user.id == req.params.id) {
+        res.render('user-changeUsername', {user: req.user})
+    } else {
+        req.session.message = {message :"Your Credentials do not match the user you're trying to change", bgColor: "bg-red-300", textColor: "text-red-500"}
+        res.redirect('/')
+    }
+})
+router.post('/api/users/change-username/:id',isWorker, (req, res) => {
+    const username = req.body.fullName
+    User.findByIdAndUpdate(req.params.id, {fullName: username}).then((user) => {
+        req.session.message = {message :"Username Changed Successfully", bgColor: "bg-green-400", textColor: "text-green-700"}
+        res.redirect('/')
+    })
+})
+
+router.get('/api/users/create-superuser', (req, res) => {
+    message = req.session.message
+    delete req.session.message
+    res.render('user-create-superuser.ejs', {message: message})
+})
+router.post('/api/users/create-superuser', (req, res) => {
+    const {fullName, password, secretKey, email} = req.body
+
+    if(secretKey != process.env.SECRET_KEY) {
+        req.session.message = {message :"Secret Key is incorrect", bgColor: "bg-red-300", textColor: "text-red-500"}
+        res.redirect('/api/users/create-superuser')
+        return
+    }
+    const {salt, hash} = genPassword(password)
+
+    User.create({fullName: fullName, email: email, salt: salt, hash: hash, isAdmin: true, isWorker: true}).then((user) => {
+        
+        res.redirect('/api/users/login')
+    }).catch(err => console.log(err))
 })
 
 router.get('/login-failure', (req, res) => {

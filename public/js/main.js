@@ -1,4 +1,3 @@
-const e = require("express")
 
 // const moment = require("moment/moment")
 function viewVoucher() {
@@ -25,7 +24,12 @@ function findFood() {
 
 
 function removeEle(id) {
-    console.log("you tried to remove me")
+    let div = document.getElementById(id).children[1]
+    let price = Number(div.getElementsByClassName('hidden')[0].innerHTML)
+
+    let amount = Number(div.getElementsByTagName('input')[0].value)
+    let wholePrice = Number(document.getElementById('whole_price').value.slice(0,-1))
+    document.getElementById('whole_price').value = (wholePrice - (price*amount)) + "$"
     document.getElementById(id).remove()
 }
 
@@ -104,11 +108,13 @@ function addEle(id) {
         
     })
     let ParentDiv2 = document.createElement("div")
+    ParentDiv2.classList.add('mx-auto')
     let ChildDiv2 = document.createElement("h1")
     let count = document.createElement('input')
     count.classList.add('w-12', 'h-6')
 count.type = 'number'
-count.name = 'count'
+count.readOnly = true
+count.name = id
 count.min = '1'
 count.value = '1'
 count.style.appearance = 'textfield'
@@ -177,8 +183,10 @@ group.appendChild(rightGroup)
     ogDiv3.innerHTML = "X"
     ogDiv3.classList.add('bg-black-900')
     ogDiv3.onclick = () => { removeEle("order_" + id); }
-    div3.appendChild(ogDiv3)
-    
+    if (document.getElementById('premissions').innerHTML == "isAdmin") {
+        div3.appendChild(ogDiv3)    
+    }
+
     div2.appendChild(div3)
     div2.appendChild(hiddenPrice)
     returnEle.appendChild(div1)

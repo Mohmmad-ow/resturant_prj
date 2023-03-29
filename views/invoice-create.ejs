@@ -18,6 +18,13 @@
     <title>Document</title>
 </head>
 <body onload="form.reset();" class="h-full">
+    <% if (user.isAdmin) { %>
+		
+		<h1 class="hidden" id="premissions">isAdmin</h1>
+	
+	<% } else { %>
+		<h1 class="hidden"  id="premissions">isWorker</h1>
+	<% } %>
     <!--  -->
     <div class="flex w-full h-full ">
         <div class="bg-green-400 basis-1/5 w-full h-full ">
@@ -50,7 +57,7 @@
             <div class="bg-blue basis-4/5 w-full h-full">
                 <div class="p-3">
 					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Checkout</p>
-					<button onclick="goBack()" class="btn bg-[#0BCA8D] text-lg w-16 h-8 rounded-2xl hover:bg-green-700 shadow-2xl float-right" id="back">Back</button>
+					<button onclick="previous()" class="btn bg-[#0BCA8D] text-lg w-16 h-8 rounded-2xl hover:bg-green-700 shadow-2xl float-right" id="back">Back</button>
                     <div style="clear: both;"></div>
 
 				</div>
@@ -66,12 +73,7 @@
                             </button>
     
                         </div>
-                        <div class="bg2 ml-2 float-left text-center" style="width: 100px;height: 50px;">
-                            <p class="text-black" style="line-height: 49px">Food</p>
-                        </div>
-                        <div class="bg2 ml-2 float-left text-center" style="width: 100px;height: 50px;">
-                            <p class="text-black" style="line-height: 49px">Drink</p>
-                        </div>
+                        
                         <div style="clear: both;"></div>
                     </div>
             <div class="grid md:grid-cols-4 grid-cols-3 gap-4 px-4" id="foods">
@@ -101,5 +103,10 @@
     </div>
 </div>
     <script src="/js/main.js"></script>
+    <script>
+        function previous() { 
+            window.history.back()
+         }
+    </script>
 </body>
 </html>
