@@ -1,17 +1,32 @@
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/dist/output.css" rel="stylesheet">
-    <title>Document</title>
+<html>
+<head">
+	<title>Profit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet">
+
+    
+
 </head>
 <body>
-    <form method="post" class="bg-gray-600 " ref='uploadForm' action="/api/products/delete/<%= id %>" >
+    <div class="flex-container min-h-[100vh] justify-center items-center">
         
+        <form class="w-[40%] bg-green-400 p-8 rounded-2xl text-white" action="/api/products/delete/<%= id %>" method="post">
+            
+                <h1 class="p-3 rounded-md text-red-700 bg-red-400 text-center">Are you sure you want to delete this Product</h1>
+                
+            
+            <div class="flex justify-center">
+                <button class="bg-slate-800 rounded-2xl mx-auto w-24 h-12 text-center mt-6 hover:bg-slate-300 hover:text-black" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+<script src="/js/main.js" defer></script>
+	
+<script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
 
-        <button>delete products</button>
-    </form>
 </body>
 </html>

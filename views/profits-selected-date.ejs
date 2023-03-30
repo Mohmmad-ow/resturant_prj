@@ -38,11 +38,11 @@
 	}
 </style>
 <body>
-<div class="flex flex-row-reverse">
+<div class="flex flex-row">
 	
 <%- include('partials/sidebar') %>
 	<div class="flex flex-col basis-4/5 items-center" style="line-height: 50px;">
-            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-green-400 mt-12 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown button <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-green-400 mt-12 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Choose date<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
             <!-- Dropdown menu -->
             <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
@@ -93,21 +93,7 @@
                 <button class="text-lg bg-green-400 border border-white hover:bg-green-700 w-36 h-12 rounded-3xl" value="Select Date" onclick="">Select Date</button>
                 
             </form>
-        <!-- <table class="table d-xl-table mb-36 mx-auto ">
-            <tr class="w-30%"> <td colspan="3" style="text-align: center;">Date 20/3/2023</td></tr>
-            <tr class="w-30%">  style="line-height: 0%;">
-                <th>Total Profit</th>
-                <th>Total Expense</th>
-                <th>Total Amount Sold</th>
-            </tr>
-            <tr class="w-30%"> style="line-height: 0%;">
-                <td><%= totalProfit %>$</td>
-                <td><%= totalExpenses %>$</td>
-                <td><%= totalSold %>$</td>
-            </tr>
-        </table> -->
-        <!-- new table -->
-
+      
         <div class="overflow-x-auto shadow-md rounded-lg w-[60%] mt-40">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">

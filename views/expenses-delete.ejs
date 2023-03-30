@@ -40,62 +40,15 @@
 
 	<div class="container-fluid p-0">
 		<div class="flex flex-row-reverse">
-			<div class="p-2 bg2 basis-1/5" style="height: 100vh;width: 320px;">
-				<p class="ml-1 font-weight-bold text-white" style="font-size: 130%">MANAGE</p>
-				<div class="row m-0">
-					<div class="col-12 p-0 py-1 h-fit bg1">
-						<div class="p-2" style="height: 55px;">
-							<div class="float-left mr-3 text-center bg3" style="width: 40px;height: 40px;">
-								<i class="fa fa-user-circle-o text-white" aria-hidden="true" style="font-size: 160%;line-height: 40px"></i>
-							</div>
-							<div class="float-left">
-								<p class="text-white mb-0"><%= user.fullName%></p>
-								<% if (user.isAdmin) { %>
-								<p class=" mb-0 text-sm text-slate-300">Administrator</p>
-								<% } else { %>
-									<p class=" mb-0 text-sm text-slate-300">Worker</p>
-								<% } %>
-							</div>
-							<div class="bg2 float-right text-center" style="width: 40px;height: 100%;">
-								<i class="fa fa-power-off text-white" aria-hidden="true" style="font-size: 130%;line-height: 39px"></i>
-							</div>
-						</div>
-					</div>
-					<a href="/api/invoice/analytics/" class="col-6 p-1" style="height: 80px;">
-						<div class="bg1 p-2" style="width: 100%;height: 100%;">
-							<p class="text-white mb-0" style="opacity: 0.7">Analytics</p>
-							<i class="fa fa-bar-chart text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
-						</div>
-					</a>
-					<a href="/api/products/view" class="col-6 p-1" style="height: 80px;">
-						<div class="bg1 p-2" style="width: 100%;height: 100%;">
-							<p class="text-white mb-0" style="opacity: 0.7">Product</p>
-							<i class="fa fa fa-cutlery text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
-						</div>
-					</a>
-					<a href="/api/Expenses/view" class="col-6 p-1" style="height: 80px;">
-						<div class="bg1 p-2" style="width: 100%;height: 100%;">
-							<p class="text-white mb-0" style="opacity: 0.7">Expenses</p>
-							<i class="fa-solid fa-cheese text-white float-right" style="font-size: 190%;opacity: 0.5"></i>
-						</div>
-					</a>
-					<a href="/settings" class="col-6 p-1" style="height: 80px;">
-						<div class="bg1 p-2" style="width: 100%;height: 100%;">
-							<p class="text-white mb-0" style="opacity: 0.7">Settings</p>
-							<i class="fa fa-cogs text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
-						</div>
-					</a>
-					<a href="/api/users/change-password" class="col-6 p-1" style="height: 80px;">
-						<div class="bg1 p-2" style="width: 100%;height: 100%;">
-							<p class="text-white mb-0" style="opacity: 0.7">Account</p>
-							<i class="fa fa fa fa-key text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
-						</div>
-					</a>
-				</div>
-			</div>
+			
 			<!-- This is the End -->
-			<div class="flex justify-center items-center h-[100vh] w-full basis-4/5">
-				<form class="bg-green-400 rounded-2xl w-[50%] p-12 flex flex-col items-center justify-center" action="/api/expenses/delete/<%= id %>" method="post" class="flex">
+			<div class="flex flex-col  items-center w-full basis-4/5">
+				<div class="p-3 w-full">
+					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Settings</p>
+					<button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
+					<div style="clear: both;"></div>
+				</div>
+				<form class="bg-green-400 rounded-2xl mt-32 w-[50%] p-12 flex flex-col items-center justify-center" action="/api/expenses/delete/<%= id %>" method="post" class="flex">
                         <h1 class=" pb-4">Are you sure you want to delete this item</h1>
                         <div class="flex flex-row">
                             <button class="p-3 rounded-2xl bg-red-300 text-red-600 hover:bg-red-500 hover:text-red-700">Delete</button>
@@ -105,9 +58,15 @@
 
                 </form>
             </div>
-			
+			<%- include('partials/sidebar') %>
 		</div>
 	</div>
+	
+		<script>
+			function previous() {
+				window.history.back()
+			}
+		</script>
 	<script src="/js/Checkout.js" defer></script>
 	<script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

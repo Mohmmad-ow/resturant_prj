@@ -39,12 +39,11 @@
 </style>
 <body>
 <div class="flex flex-row-reverse">
-	<%- include('partials/sidebar') %>
     
 	<div class="flex flex-col justify-center items-center bg-white basis-4/5">
         <div class="w-[65%] flex flex-row justify-between">
-            <button class="btn" onclick="goBack()">Back</button>
-           <a class="btn w-fit" href="/api/products/create">add product</a>
+            <button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
+            <a class="btn w-fit" href="/api/products/create">add product</a>
         </div>
         <table class="w-[50%] mt-4" style="background-color: #fdf5f5a2;">
             <tr>
@@ -68,10 +67,12 @@
             <% }) %>
         </table>
 	</div>
+    <%- include('partials/sidebar') %>
+
 </div>
 <script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
 <script>
-    function goBack() {
+    function previous() {
         window.history.back()
     }
 </script>

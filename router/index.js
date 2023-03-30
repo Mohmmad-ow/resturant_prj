@@ -137,7 +137,10 @@ router.get('/api/products/view', isWorker,(req, res) => {
 router.get("/api/products/edit/:id", isWorker,(req, res) => {
     const id = req.params.id
     Product.findById(id).then(content => {
-        res.render("product-edit", {product: content, user: req.user})
+        Category.find().then((categories => {
+
+            res.render("product-edit", {product: content, user: req.user, categories: categories})
+        })).catch(err => console.log(err))
     }).catch(err => console.log(err))
 })
 router.post("/api/products/edit/:id", (req, res) => {
@@ -553,7 +556,10 @@ router.post('/api/expenses/delete/:id', isWorker,(req, res) => {
 })
 
 router.get('/api/expenses/edit/:id', isWorker,(req, res) => {
-    res.render('expenses-edit', {id: req.params.id, user: req.user})
+    Expense.findById(req.params.id).then((expense) => {
+
+        res.render('expenses-edit', {id: req.params.id, user: req.user, expense: expense})
+    }).catch(err => console.log(err))
 })
 
 router.post('/api/expenses/edit/:id',isWorker, (req, res) => {
