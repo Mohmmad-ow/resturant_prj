@@ -40,8 +40,9 @@
 	
 	<div class="container-fluid p-0">
 		
-		<div class="flex flex-row-reverse">
-			
+		<div class="flex flex-row">
+			<%- include('partials/sidebar') %>
+
 			<!-- This is the End -->
 			<div class="flex flex-col justify-center h-fit w-full basis-4/5">
 				<% if (message) { %>
@@ -49,17 +50,17 @@
 						<h1 class="text-lg"><%= message.message %></h1>
 				</div>
 				<% } %>
-				<div class="grid grid-cols-6 grid-col gap-4 items-start justify-start h-fit w-full">
+				<div class="pt-4 px-2 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 grid-col gap-2 md:gap-4 items-start justify-start h-fit w-full">
 					<% tables.forEach((table) => { %>
 						<% if (table.isFree == true) { %>
-						<a class="p-2 text-white text-center" href="/api/invoice/create/<%= table.tableNumber %>">
+						<a class=" text-white text-center" href="/api/invoice/create/<%= table.tableNumber %>">
 							<div class="p-3 bg-slate-800 rounded-2xl">
 								<h1><%= table.tableNumber %></h1>
 								<div class="float-right rounded-full w-2 h-2 bg-green-400"></div>
 							</div>
 						</a>
 						<% } else { %>
-							<a class="p-2 text-white text-center" href="/api/invoice/edit/<%= table.tableNumber %>">
+							<a class="text-white text-center" href="/api/invoice/edit/<%= table.tableNumber %>">
 								<div class="p-3 bg-slate-800 rounded-2xl">
 									<h1><%= table.tableNumber %></h1>
 									<div class="float-right rounded-full w-2 h-2 bg-red-600"></div>
@@ -69,7 +70,6 @@
 							<% }) %>
 				</div>
 			</div>
-			<%- include('partials/sidebar') %>
 			
 		</div>
 	</div>

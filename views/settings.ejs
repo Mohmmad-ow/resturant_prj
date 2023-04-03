@@ -4,7 +4,6 @@
     <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
             <link href="/output.css" rel="stylesheet">
@@ -34,20 +33,20 @@
 	}
 </style>
 <body>
-	<div class="container-fluid p-0">
-		<div class="row m-0">
+	<div class="">
+		<div class="flex flex-row">
 			<%- include('partials/sidebar') %>
 
-			<div class="p-2 w-full" style="height: 100vh;width: calc(100% - 320px)">
-				<div class="p-3">
+			<div class="p-2 w-full basis-4/5">
+				<div class="md:p-3 p-1">
 					<p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Settings</p>
 					<button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
 					<div style="clear: both;"></div>
 				</div>
-                <div class="flex flex-row justify-between px-16">
+                <div class="flex flex-row justify-between px-6 md:px-16">
                     <div class="felx flex-col basis-2/5 w-full ">
                         <h1 class="text-center text-3xl p-6">Voucher</h1>
-                        <table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
+                        <table class="border-collapse border w-full border-slate-500 bg-green-700 p-2 md:p-4 mt-12">
                             <tr>
                                 <th class="p-2 border-slate-500 bg-green-700 text-white border">Code</th>
                                 <th class="p-2 border-slate-500 bg-green-700 text-white border">Price</th>
@@ -74,8 +73,8 @@
                         <div></div>
                         <button>Submit</button>
                     </form>
-					<div class="mt-32">
-						<table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
+					<div class="md:mt-32 mt-16">
+						<table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 md:mt-12 mt-6">
 							<tr>
 								<th class="p-2 border-slate-500 bg-green-700 text-white border">Table Number</th>
 								<th class="p-2 border-slate-500 bg-green-700 text-white border">is Free</th>
@@ -102,7 +101,7 @@
 					</div>
                     </div>
                     <div class="flex flex-col basis-2/5 w-full">
-                        <h1 class="text-center text-3xl p-6">Categories</h1>
+                        <h1 class="text-center text-3xl md:p-6 p-3">Categories</h1>
                         <table class="border-collapse border w-full border-slate-500 bg-green-700 p-4 mt-12">
                             <tr>
                                 <th>Type</th>
@@ -127,7 +126,7 @@
 						
                     </div>
                 </div>
-				<div class=" flex justify-center items-center  py-6">
+				<div class="mt-12 flex justify-center items-center">
 					<a href="/api/users/create-superuser" class="bg-green-400 text-white hover:bg-green-700 rounded-md p-4">Create Admin</a>
 				</div>
 			</div>
@@ -138,7 +137,7 @@
 			window.history.back()
 		}
 	</script>
-		<script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
+			<script src="https://kit.fontawesome.com/c31ef39b02.js" crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -38,18 +38,18 @@
 </style>
 <body>
 
-	<div class="container-fluid p-0">
+	<div class="p-0">
 		<div class="flex flex-row">
             <%- include('partials/sidebar') %>
 
 			<!-- This is the End -->
-                <div class="container flex flex-col justify-center items-center basis-4/5">
+                <div class="flex flex-col justify-center items-center basis-4/5">
                     <div class="p-3 w-full">
                         <p class="float-left text-black font-weight-bold mb-0" style="font-size: 130%">Manage Users</p>
                         <button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
                         <div style="clear: both;"></div>
                     </div>
-                   <table class="mt-24">
+                   <table class="mt-24 md:w-[70%]">
                             <tr>
                                 <th>Sequenece</th>
                                 <th>Full Name</th>
@@ -78,7 +78,7 @@
                             </tr>
                             <% } %>
                    </table>
-                   <div class="flex flex-col justify-end w-[80%] ml-[45%] mt-12 items-center">
+                   <div class="flex flex-col justify-end mt-12 mx-auto items-center">
                     <h3 class="py-4">Add New User</h3>
                         <form class="flex flex-col justify-center items-centerS" action="/api/users/register" method="post">
                     

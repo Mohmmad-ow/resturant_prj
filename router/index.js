@@ -188,11 +188,11 @@ router.post("/api/products/delete/:id",isWorker, (req, res) => {
         fs.unlinkSync(path.join(__dirname,'../' + "public", content.pic_url), (err) => {
             if(!err) {
                 console.log("worked")
+                res.redirect("/api/products/view")
             } else {
                 console.log(err)
             }
         })
-        res.redirect("/api/products/view")
     }).catch(err => console.log(err))
 })
 
@@ -654,7 +654,7 @@ router.get('/api/users/manage-users/:id',isAdmin, (req, res) => {
 router.get('/api/users/manage-users/edit/:id',isAdmin, (req, res) => {
     User.findOne({_id: req.params.id}).then((content) => {
 
-        res.render('user-manager-edit', {user: content})
+        res.render('user-manager-edit', {editedUser: content, user: req.user})
 
     }).catch(err => console.log(err))
 })

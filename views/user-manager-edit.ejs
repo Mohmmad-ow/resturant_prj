@@ -71,12 +71,12 @@
         </div>
         <div class="flex-container w-full justify-center items-center">
         
-            <form class="w-[40%] bg-green-400 p-4 rounded-2xl text-white" action="/api/users/manage-users/edit/<%= user.id %>" method="post">
+            <form class="w-[90%] md:w-[70%] bg-green-400 p-4 rounded-2xl text-white" action="/api/users/manage-users/edit/<%= editedUser.id %>" method="post">
                 <div class="bg-green-400 p-4 text-white">
-                    <h1 class="text-left text-base">Full Name: <%= user.fullName %></h1>
-                    <h1 class="text-left text-base">Email: <%= user.email %></h1>
-                    <h1 class="text-left text-base mt-12">Is a worker: <%= user.isWorker %></h1>
-                    <h1 class="text-left text-base">Is an admin: <%= user.isAdmin %></h1>
+                    <h1 class="text-left text-base">Full Name: <%= editedUser.fullName %></h1>
+                    <h1 class="text-left text-base">Email: <%= editedUser.email %></h1>
+                    <h1 class="text-left text-base mt-12">Is a worker: <%= editedUser.isWorker %></h1>
+                    <h1 class="text-left text-base">Is an admin: <%= editedUser.isAdmin %></h1>
                     
                     
                 </div>
@@ -84,11 +84,11 @@
                 <h1 class="text-center text-lg py-2">Edit User Info</h1>
                 <div class="text-center p-1">
                     <label class="text-base" for="full_name">First Name</label>
-                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= user.fullName %>" name="fullName">
+                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="text" id="full_name" value="<%= editedUser.fullName %>" name="fullName">
                 </div>
                 <div class="text-center p-1">
                     <label class="text-base" for="email">Email</label>
-                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="email" id="email" value="<%= user.email %>" name="email">
+                    <input autocomplete="off" class="text-black text-base w-[70%] text-center rounded-2xl p-2 focus:" type="email" id="email" value="<%= editedUser.email %>" name="email">
                 </div>
                 <div class="text-center p-1">
                     <label class="text-base" for="password">Password</label>
@@ -96,12 +96,12 @@
                 </div>
                 <div class="text-center flex flex-row-reverse justify-center items-center">
                     <h1 class="text-lg py-1 px-2">Is an admin</h1>
-                    <input class="text-base" type="checkbox" name="isAdmin" checked="<%= user.isAdmin %>">
+                    <input class="text-base" type="checkbox" name="isAdmin" checked="<%= editedUser.isAdmin %>">
                 </div>
                 
                 <div class="text-center flex flex-row-reverse justify-center items-center">
                     <h1 class="text-lg py-1 px-2">Is a worker   </h1>
-                    <input class="text-base" type="checkbox" name="isWorker" checked="<%= user.isWorker %>">
+                    <input class="text-base" type="checkbox" name="isWorker" checked="<%= editedUser.isWorker %>">
                 </div>
                 <div class="w-full flex justify-center mt-2">
                     <button class="bg-slate-800 text-base rounded-2xl mx-auto w-24 h-12 text-center hover:bg-slate-300 hover:text-black" type="submit">Submit</button>

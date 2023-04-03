@@ -44,10 +44,12 @@
 </style>
 <body>
 	<div class="container-fluid p-0">
-		<div class="row m-0">
+		<div class="flex flex-row">
 			<%- include('partials/sidebar') %>
+			<div class="basis-4/5 w-full">
 
-			<div class="p-0" style="height: 100vh;width: calc(100% - 320px)">
+			
+			<div class="p-0">
 				<div class="p-3">
 					<p class="float-left text-white font-weight-bold mb-0" style="font-size: 130%">Checkout</p>
 					<button onclick="previous()" class="btn bg-[#0BCA8D] shadow-2xl float-right">Back</button>
@@ -55,7 +57,7 @@
 				</div>
 				
 				
-				<div style="height: calc(100vh - 120px);overflow-y: auto;">
+				<div class="w-full md:w-[50%] mx-auto">
 
 					<div class="py-2 px-4 text-white bg2" style="width: 500px;margin: auto">
 						<form  ref='uploadForm' 
@@ -84,6 +86,7 @@
 				
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 <script>
