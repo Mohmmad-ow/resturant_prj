@@ -19,53 +19,53 @@
                 </a>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full pt-4">
-            <a class="p" href="/api/invoice/analytics/"  style="height: 80px;">
+        <div class="grid gap-2 w-full pt-4 min-h-full" style="grid-template-columns: repeat(2, 1fr);">
+            <a class="p min-h-24" href="/api/invoice/analytics/"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Analytics</p>
                     <i class="fa fa-bar-chart text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/"  style="height: 80px;">
+            <a class="p min-h-24" href="/"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Home</p>
                     <i class="fa-solid fa-house text-white float-right" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/api/products/view"  style="height: 80px;">
+            <a class="p min-h-24" href="/api/products/view"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Product</p>
                     <i class="fa fa fa-cutlery text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/api/Expenses/view"  style="height: 80px;">
+            <a class="p min-h-24" href="/api/Expenses/view"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Expenses</p>
                     <i class="fa-solid fa-cheese text-white float-right" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/settings"  style="height: 80px;">
+            <a class="p min-h-24" href="/settings"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Settings</p>
                     <i class="fa fa-cogs text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/api/users/change-password"  style="height: 80px;">
+            <a class="p min-h-24" href="/api/users/change-password"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Account</p>
                     <i class="fa fa fa fa-key text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
-            <a class="p" href="/profits"  style="height: 80px;">
+            <a class="p min-h-24" href="/profits"  >
                 <div class="bg1 p-2" style="height: 100%;">
                     <p class="text-white mb-0" style="opacity: 0.7">Profits</p>
                     <i class="fa-solid fa-dollar-sign text-white float-right" aria-hidden="true" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>
             <% if (user.isAdmin ) { %>
-            <a class="p" href="/api/users/manage-users"  style="height: 80px;">
+            <a class="p min-h-24" href="/api/users/manage-users"  >
                 <div class="bg1 p-2" style="height: 100%;">
-                    <p class="text-white mb-0" style="opacity: 0.7">Manage Users</p>
+                    <p class="text-white mb-0" style="opacity: 0.7">Manage Workers</p>
                     <i class="fa-solid fa-user-gear text-white float-right" style="font-size: 190%;opacity: 0.5"></i>
                 </div>
             </a>

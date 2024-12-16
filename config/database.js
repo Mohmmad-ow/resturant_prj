@@ -9,7 +9,7 @@ const UserSchema = mongoose.Schema({
     fullName: String,
     date: { type: Date, required: true, default: Date() },
     updateDate: {type: Date, default: Date()},
-    isAdmin: {type: Boolean, default: false},
+    isAdmin: {type: Boolean, default: true},
     isWorker: {type: Boolean, default: true}
 
 })

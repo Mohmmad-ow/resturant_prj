@@ -14,7 +14,7 @@ const verifyCallback = (email, password, done) => {
         .then((user) => {
 
             if (!user) { return done(null, false) }
-            
+
             const isValid = validPassword(password, user.hash, user.salt);
             
             if (isValid) {
